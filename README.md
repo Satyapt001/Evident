@@ -1,8 +1,6 @@
 # CyberShield — AI-Powered Cyber Threat Detection & Response
 
 > **Project status:** Active development  
-> **Problem statement:** PS9 — AI-powered cyber threat, phishing and digital impersonation detection and response system  
-> **Repository:** Coming soon  
 > **Project type:** AI/ML · Cybersecurity · Threat Intelligence · Security Operations Automation
 
 CyberShield is a cybersecurity platform designed to help security analysts identify suspicious activity, classify potential threats, assess risk, understand detection evidence, and choose appropriate response actions through a unified dashboard.
@@ -385,7 +383,7 @@ The repository is marked as **coming soon**. Once it is published, replace the p
 ### 1. Clone the repository
 
 ```bash
-git clone <YOUR-GITHUB-REPOSITORY-URL>
+git clone (https://github.com/Satyapt001/Evident.git)
 cd <YOUR-REPOSITORY-DIRECTORY>
 ```
 
