@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CyberShield | Threat detection to recommended response</title>
+<meta name="description" content="CyberShield is an AI-powered cyber threat, phishing and digital impersonation detection and response system. Open-source release coming soon.">
+<meta name="theme-color" content="#050912">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 5 7v8c0 7 5 12 11 14 6-2 11-7 11-14V7z' fill='%2300d4ff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js"}}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="emblem" viewBox="0 0 32 32"><path d="M16 2.5 4.5 7v8.5c0 7.2 5 12.2 11.5 14 6.5-1.8 11.5-6.8 11.5-14V7z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 9v6.5m0 0-5 4m5-4 5 4" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="16" cy="9" r="2" fill="currentColor"/><circle cx="11" cy="19.5" r="2" fill="currentColor"/><circle cx="21" cy="19.5" r="2" fill="#5b8cff"/></symbol></svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav" id="top">
+  <a class="brand" href="#top" aria-label="CyberShield home"><svg class="emblem" aria-hidden="true"><use href="#emblem"/></svg>CyberShield</a>
+  <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  <nav id="menu" aria-label="Primary">
+    <a href="#problem">Why</a><a href="#features">Capabilities</a><a href="#workflow">Workflow</a><a href="#preview">Preview</a><a href="#team">Team</a><a href="#start">Get started</a><a href="#faq">FAQ</a>
+  </nav>
+</header>
+
+<main id="main">
+<section class="hero" id="hero" aria-labelledby="h-title">
+  <div class="hero-scene" id="scene" role="img" aria-label="Interactive 3D network of connected nodes with signals travelling along connections and a few highlighted threat nodes. Decorative illustration, not live data.">
+    <canvas id="net"></canvas>
+    <div class="fallback" aria-hidden="true"></div>
+  </div>
+  <div class="hero-copy">
+    <p class="status"><span class="dot"></span>GitHub release coming soon</p>
+    <h1 id="h-title">Detect threats. Understand risk. Respond with confidence.</h1>
+    <p class="lead">CyberShield brings multiple cybersecurity analysis capabilities into one analyst-oriented workflow, from network behaviour and phishing to impersonation and malware triage.</p>
+    <div class="cta"><a class="btn primary" href="#features">Explore Capabilities</a><a class="btn" href="#workflow">How It Works</a></div>
+    </div>
+  <ul class="ticker" aria-label="Project status"><li>GitHub: Coming soon</li><li>Backend: Future phase</li><li>Network visual: Illustrative, not live telemetry</li></ul>
+</section>
+
+<section id="problem" class="sec light reveal" aria-labelledby="h-problem">
+  <div class="wrap two">
+    <div><p class="eyebrow">01 / Why</p>
+<h2 id="h-problem">Alerts without context slow investigations</h2>
+    <p>Network anomalies, phishing links, suspicious emails, manipulated media and unknown files are often analysed in separate tools. Analysts then reconcile the results by hand and interpret alerts without enough supporting evidence.</p></div>
+    <div><p>CyberShield is designed to move from isolated detectors toward one explainable investigation workflow: each finding carries its evidence, feeds a shared risk view, and ends in a recommended next step for a person to review.</p>
+    <p class="muted">These are design objectives for the project, not claims about other products.</p></div>
+  </div>
+</section>
+
+<section id="features" class="sec reveal" aria-labelledby="h-feat">
+  <div class="wrap">
+    <p class="eyebrow">02 / Capabilities</p>
+<h2 id="h-feat">Core capabilities</h2>
+    <p class="sub">Six analysis areas intended to share one dashboard. Select a card to see more.</p>
+    <div class="grid cards" id="cards">
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg><h3>Network Anomaly and Technical Behaviour Detection</h3><p>Analyses network-flow features and relevant technical telemetry for suspicious patterns.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Findings are presented with the features that contributed, so analysts can judge them rather than trust a bare score.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg><h3>Phishing and URL Analysis</h3><p>ML-based URL classification and available threat-intelligence enrichment.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Enrichment depends on the threat-intelligence sources available at deployment.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M3 6h18v12H3zM3 7l9 7 9-7"/></svg><h3>Social Engineering and Email Analysis</h3><p>Analyses email text for configured indicators such as urgency, impersonation, credential-harvesting language and suspicious requests.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Indicators are configurable and shown alongside the text that triggered them.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M4 21c1-5 15-5 16 0M4 4h3M17 4h3"/></svg><h3>Deepfake and Digital-Impersonation Analysis</h3><p>Analyses submitted media for potential manipulation indicators using the project's image-analysis approach.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Results indicate potential manipulation. They are not proof of authenticity or forgery.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5"/></svg><h3>Malware Triage</h3><p>Supports initial suspicious-file analysis and severity assessment.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Triage helps prioritise files for deeper analysis. It does not replace it.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6zM8.5 12l2.5 2.5 4.5-5"/></svg><h3>Risk Assessment and Response Recommendations</h3><p>Presents available risk information, evidence, explanations, incidents and recommended next steps for analysts.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Recommendations are suggestions for a security administrator or SOC analyst to review.</p></article>
+    </div>
+    <p class="callout">Implementation status: the capability descriptions above are project objectives. Which ones are implemented and tested will be stated with the repository release. Live-feed, automation and backend integration are still in progress.</p>
+  </div>
+</section>
+
+<section id="workflow" class="sec reveal" aria-labelledby="h-flow">
+  <div class="wrap">
+    <p class="eyebrow">03 / Workflow</p>
+<h2 id="h-flow">From detection to recommended response</h2>
+    <p class="sub">The intended six-stage flow. Scroll or select a stage. End-to-end automation depends on integration work that is still in progress.</p>
+    <ol class="flow" id="flow">
+      <li class="stage active"><button aria-pressed="true"><span class="n">1</span>Detection</button><p>Receive or submit relevant digital evidence.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">2</span>Classification</button><p>The appropriate detector produces a finding.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">3</span>Risk Assessment</button><p>Available results and evidence inform severity.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">4</span>Explanation</button><p>Display the indicators that support the finding.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">5</span>Alert / Incident</button><p>Surface relevant findings for investigation and tracking.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">6</span>Recommended Response</button><p>Provide suggested actions for the security administrator or SOC analyst.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="preview" class="sec reveal" aria-labelledby="h-prev">
+  <div class="wrap">
+    <p class="eyebrow">04 / Preview</p>
+<h2 id="h-prev">Illustrative product preview</h2>
+    <p class="sub">Prototype dashboard preview. All values are sample data, not real telemetry, customer data or results.</p>
+    <div class="dash" role="group" aria-label="Prototype dashboard preview with sample data">
+      <div class="panel"><h3>Security overview</h3><p class="muted">Sample data</p>
+        <dl class="kpis"><div><dt>Open incidents</dt><dd>12</dd></div><div><dt>New findings</dt><dd>34</dd></div><div><dt>Awaiting review</dt><dd>7</dd></div></dl></div>
+      <div class="panel"><h3>Severity distribution (sample)</h3>
+        <ul class="bars"><li><span>Critical</span><i style="--w:10%;--c:#ff5d6c"></i><b>2</b></li><li><span>High</span><i style="--w:28%;--c:#ffb454"></i><b>5</b></li><li><span>Medium</span><i style="--w:45%;--c:#5b8cff"></i><b>9</b></li><li><span>Low</span><i style="--w:70%;--c:#00d4ff"></i><b>14</b></li></ul></div>
+      <div class="panel"><h3>Detection categories (sample)</h3>
+        <ul class="tags"><li>Network behaviour</li><li>Phishing URL</li><li>Email</li><li>Deepfake</li><li>Malware</li></ul></div>
+      <div class="panel wide"><h3>Incident list (sample)</h3>
+        <table><thead><tr><th scope="col">ID</th><th scope="col">Category</th><th scope="col">Severity</th><th scope="col">Evidence</th><th scope="col">Suggested action</th></tr></thead><tbody>
+        <tr><td>SAMPLE-001</td><td>Phishing URL</td><td>High</td><td>Lookalike domain</td><td>Block and review</td></tr>
+        <tr><td>SAMPLE-002</td><td>Email</td><td>Medium</td><td>Urgency and credential request</td><td>Notify recipient</td></tr>
+        <tr><td>SAMPLE-003</td><td>Network behaviour</td><td>Medium</td><td>Unusual flow pattern</td><td>Investigate host</td></tr></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<section id="difference" class="sec reveal" aria-labelledby="h-diff">
+  <div class="wrap">
+    <p class="eyebrow">05 / Approach</p>
+<h2 id="h-diff">Intended design approach</h2>
+    <ul class="grid diff">
+      <li><h3>One interface</h3><p>Multiple threat surfaces in a single view.</p></li>
+      <li><h3>Connected workflow</h3><p>From detection to recommended response.</p></li>
+      <li><h3>Evidence first</h3><p>Explanations instead of only binary results.</p></li>
+      <li><h3>Analyst in the loop</h3><p>Recommendations a person reviews and decides on.</p></li>
+      <li><h3>Modular</h3><p>Detectors plug into a shared dashboard.</p></li>
+    </ul>
+    <p class="muted">No detection accuracy, false-positive rate or remediation guarantee is claimed.</p>
+  </div>
+</section>
+
+<section id="team" class="sec reveal" aria-labelledby="h-team">
+  <div class="wrap">
+    <p class="eyebrow">06 / Team</p>
+<h2 id="h-team">Team</h2>
+    <div class="grid team">
+      <article class="member"><span class="av" aria-hidden="true">ST</span><h3>Satyapriya Tripathy</h3><p class="role">Team Lead</p><p>Responsible for developing models for URL analysis, NLP-based content analysis, deepfake detection, and network anomaly/technical behaviour detection; backend and frontend integration; dashboard development; and ongoing live-feed, automation and backend integration work.</p></article>
+      <article class="member"><span class="av" aria-hidden="true">BN</span><h3>Bimal Kumar Naik</h3><p class="role">Resource and Project Support</p><p>Contributed PC/internet resources and feedback following analysis and project reviews.</p></article>
+      <article class="member"><span class="av" aria-hidden="true">RP</span><h3>Rohit Kumar Prajapati</h3><p class="role">Presentation Preparation</p><p>Contributed to presentation preparation and communicating the project.</p></article>
+      <article class="member"><span class="av" aria-hidden="true">SM</span><h3>Soumya Ranjan Mishra</h3><p class="role">Malware Triage</p><p>Responsible for malware triage model training.</p></article>
+      <article class="member"><span class="av" aria-hidden="true">AD</span><h3>Abhay Das</h3><p class="role">Account Takeover Detection</p><p>Responsible for account takeover model training.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="start" class="sec reveal" aria-labelledby="h-start">
+  <div class="wrap two">
+    <div><p class="eyebrow">07 / Get started</p>
+<h2 id="h-start">Get started</h2>
+    <p class="badge">Open-source release coming soon.</p>
+    <p>The repository and setup instructions will be published here once available. There is no download or repository link yet.</p></div>
+    <div class="panel"><h3>Anticipated installation flow (illustrative)</h3>
+      <p class="muted">These are expected steps, not verified instructions.</p>
+      <ol class="steps"><li>Clone the official repository after it is published.</li><li>Read the README and prerequisites.</li><li>Install the documented dependencies.</li><li>Configure environment variables if required.</li><li>Start the frontend and backend as published.</li><li>Open the application locally.</li></ol></div>
+  </div>
+</section>
+
+<section id="faq" class="sec reveal" aria-labelledby="h-faq">
+  <div class="wrap narrow">
+    <p class="eyebrow">08 / FAQ</p>
+<h2 id="h-faq">Frequently asked questions</h2>
+    <details><summary>What is CyberShield?</summary><p>An AI-powered cyber threat, phishing and digital impersonation detection and response system that aims to combine several analysis capabilities in one analyst workflow.</p></details>
+    <details><summary>What types of threats can it analyse?</summary><p>Network anomalies and technical behaviour, phishing URLs, social-engineering emails, deepfake and impersonation media, and suspicious files (malware triage).</p></details>
+    <details><summary>Who is the intended user?</summary><p>Organisations and general users, and technical users such as IT teams, security professionals, SOC analysts and security administrators.</p></details>
+    <details><summary>How does the detection-to-response workflow operate?</summary><p>Evidence is submitted, a detector classifies it, risk is assessed, supporting indicators are explained, relevant findings become alerts or incidents, and suggested actions are offered for review. Integration work for this flow is ongoing.</p></details>
+    <details><summary>Does CyberShield automatically take remediation actions?</summary><p>No automatic remediation is claimed. Recommendations are suggestions for a person to review. Any automated action would be a separate capability.</p></details>
+    <details><summary>Is the GitHub repository available yet?</summary><p>No. The release is coming soon and this page will be updated when it is published.</p></details>
+    <details><summary>Is the backend integrated with this landing page?</summary><p>No. Backend integration is planned for a future phase. This page runs on its own and shows no live data.</p></details>
+    <details><summary>How can I install CyberShield when the source is released?</summary><p>Follow the README in the official repository once it exists. The anticipated flow is outlined in the Get started section.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div><a class="brand" href="#top"><svg class="emblem" aria-hidden="true"><use href="#emblem"/></svg>CyberShield</a><p class="muted">AI-Powered Cyber Threat, Phishing and Digital Impersonation Detection and Response System.</p></div>
+    <nav aria-label="Footer"><a href="#features">Capabilities</a><a href="#workflow">Workflow</a><a href="#preview">Preview</a><a href="#team">Team</a><a href="#faq">FAQ</a></nav>
+    <p class="muted">GitHub: Coming soon</p>
+  </div>
+  <p class="wrap muted small">This is an informational product page. It does not provide live threat monitoring.<br>&copy; <span id="yr">2026</span> CyberShield project team. All rights reserved.</p>
+</footer>
+<script type="module" src="script.js"></script>
+</body>
+</html>
