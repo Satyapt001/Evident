@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CyberShield | Threat detection to recommended response</title>
+<meta name="description" content="CyberShield is an AI-powered cyber threat, phishing and digital impersonation detection and response system. Open-source release coming soon.">
+<meta name="theme-color" content="#050912">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 5 7v8c0 7 5 12 11 14 6-2 11-7 11-14V7z' fill='%2300d4ff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js"}}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="emblem" viewBox="0 0 32 32"><path d="M16 2.5 4.5 7v8.5c0 7.2 5 12.2 11.5 14 6.5-1.8 11.5-6.8 11.5-14V7z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 9v6.5m0 0-5 4m5-4 5 4" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="16" cy="9" r="2" fill="currentColor"/><circle cx="11" cy="19.5" r="2" fill="currentColor"/><circle cx="21" cy="19.5" r="2" fill="#5b8cff"/></symbol></svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav" id="top">
+  <a class="brand" href="#top" aria-label="CyberShield home"><svg class="emblem" aria-hidden="true"><use href="#emblem"/></svg>CyberShield</a>
+  <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  <nav id="menu" aria-label="Primary">
+    <a href="#problem">Why</a><a href="#features">Capabilities</a><a href="#workflow">Workflow</a><a href="#preview">Preview</a><a href="#team">Team</a><a href="#install">Install</a><a href="#faq">FAQ</a>
+  </nav>
+</header>
+
+<main id="main">
+<section class="hero" id="hero" aria-labelledby="h-title">
+  <div class="hero-scene" id="scene" role="img" aria-label="Interactive 3D network of connected nodes with signals travelling along connections and a few highlighted threat nodes. Decorative illustration, not live data.">
+    <canvas id="net"></canvas>
+    <div class="fallback" aria-hidden="true"></div>
+  </div>
+  <div class="hero-copy">
+    <p class="status"><span class="dot"></span><a href="https://github.com/Satyapt001/Evident" rel="noopener">Source on GitHub</a></p>
+    <h1 id="h-title">Detect threats. Understand risk. Respond with confidence.</h1>
+    <p class="lead">CyberShield brings multiple cybersecurity analysis capabilities into one analyst-oriented workflow, from network behaviour and phishing to impersonation and malware triage.</p>
+    <div class="cta"><a class="btn primary" href="#features">Explore Capabilities</a><a class="btn" href="#workflow">How It Works</a><a class="btn" href="#install">Install Guide</a></div>
+    </div>
+  <ul class="ticker" aria-label="Project status"><li><a href="https://github.com/Satyapt001/Evident" rel="noopener">GitHub: Available</a></li><li>This page: Not connected to the backend</li><li>Network visual: Illustrative, not live telemetry</li></ul>
+</section>
+
+<section id="problem" class="sec light reveal" aria-labelledby="h-problem">
+  <div class="wrap two">
+    <div><p class="eyebrow">01 / Why</p>
+<h2 id="h-problem">Alerts without context slow investigations</h2>
+    <p>Network anomalies, phishing links, suspicious emails, manipulated media and unknown files are often analysed in separate tools. Analysts then reconcile the results by hand and interpret alerts without enough supporting evidence.</p></div>
+    <div><p>CyberShield is designed to move from isolated detectors toward one explainable investigation workflow: each finding carries its evidence, feeds a shared risk view, and ends in a recommended next step for a person to review.</p>
+    <p class="muted">These are design objectives for the project, not claims about other products.</p></div>
+  </div>
+</section>
+
+<section id="features" class="sec reveal" aria-labelledby="h-feat">
+  <div class="wrap">
+    <p class="eyebrow">02 / Capabilities</p>
+<h2 id="h-feat">Core capabilities</h2>
+    <p class="sub">Six analysis areas intended to share one dashboard. Select a card to see more.</p>
+    <div class="grid cards" id="cards">
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg><h3>Network Anomaly and Technical Behaviour Detection</h3><p>Analyses network-flow features and relevant technical telemetry for suspicious patterns.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Findings are presented with the features that contributed, so analysts can judge them rather than trust a bare score.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg><h3>Phishing and URL Analysis</h3><p>ML-based URL classification and available threat-intelligence enrichment.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Enrichment depends on the threat-intelligence sources available at deployment.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M3 6h18v12H3zM3 7l9 7 9-7"/></svg><h3>Social Engineering and Email Analysis</h3><p>Analyses email text for configured indicators such as urgency, impersonation, credential-harvesting language and suspicious requests.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Indicators are configurable and shown alongside the text that triggered them.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M4 21c1-5 15-5 16 0M4 4h3M17 4h3"/></svg><h3>Deepfake and Digital-Impersonation Analysis</h3><p>Analyses submitted media for potential manipulation indicators using the project's image-analysis approach.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Results indicate potential manipulation. They are not proof of authenticity or forgery.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5"/></svg><h3>Malware Triage</h3><p>Supports initial suspicious-file analysis and severity assessment.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Triage helps prioritise files for deeper analysis. It does not replace it.</p></article>
+      <article class="card"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6zM8.5 12l2.5 2.5 4.5-5"/></svg><h3>Risk Assessment and Response Recommendations</h3><p>Presents available risk information, evidence, explanations, incidents and recommended next steps for analysts.</p><button class="more" aria-expanded="false">Details</button><p class="extra" hidden>Recommendations are suggestions for a security administrator or SOC analyst to review.</p></article>
+    </div>
+    <p class="callout">Implementation status: the capability descriptions above are project objectives. Check the GitHub repository for what is implemented and tested. Live-feed, automation and backend integration work is still in progress.</p>
+  </div>
+</section>
+
+<section id="workflow" class="sec reveal" aria-labelledby="h-flow">
+  <div class="wrap">
+    <p class="eyebrow">03 / Workflow</p>
+<h2 id="h-flow">From detection to recommended response</h2>
+    <p class="sub">The intended six-stage flow. Scroll or select a stage. End-to-end automation depends on integration work that is still in progress.</p>
+    <ol class="flow" id="flow">
+      <li class="stage active"><button aria-pressed="true"><span class="n">1</span>Detection</button><p>Receive or submit relevant digital evidence.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">2</span>Classification</button><p>The appropriate detector produces a finding.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">3</span>Risk Assessment</button><p>Available results and evidence inform severity.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">4</span>Explanation</button><p>Display the indicators that support the finding.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">5</span>Alert / Incident</button><p>Surface relevant findings for investigation and tracking.</p></li>
+      <li class="stage"><button aria-pressed="false"><span class="n">6</span>Recommended Response</button><p>Provide suggested actions for the security administrator or SOC analyst.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="preview" class="sec reveal" aria-labelledby="h-prev">
+  <div class="wrap">
+    <p class="eyebrow">04 / Preview</p>
+<h2 id="h-prev">Illustrative product preview</h2>
+    <p class="sub">Prototype dashboard preview. All values are sample data, not real telemetry, customer data or results.</p>
+    <div class="dash" role="group" aria-label="Prototype dashboard preview with sample data">
+      <div class="panel"><h3>Security overview</h3><p class="muted">Sample data</p>
+        <dl class="kpis"><div><dt>Open incidents</dt><dd>12</dd></div><div><dt>New findings</dt><dd>34</dd></div><div><dt>Awaiting review</dt><dd>7</dd></div></dl></div>
+      <div class="panel"><h3>Severity distribution (sample)</h3>
+        <ul class="bars"><li><span>Critical</span><i style="--w:10%;--c:#ff5d6c"></i><b>2</b></li><li><span>High</span><i style="--w:28%;--c:#ffb454"></i><b>5</b></li><li><span>Medium</span><i style="--w:45%;--c:#5b8cff"></i><b>9</b></li><li><span>Low</span><i style="--w:70%;--c:#00d4ff"></i><b>14</b></li></ul></div>
+      <div class="panel"><h3>Detection categories (sample)</h3>
+        <ul class="tags"><li>Network behaviour</li><li>Phishing URL</li><li>Email</li><li>Deepfake</li><li>Malware</li></ul></div>
+      <div class="panel wide"><h3>Incident list (sample)</h3>
+        <table><thead><tr><th scope="col">ID</th><th scope="col">Category</th><th scope="col">Severity</th><th scope="col">Evidence</th><th scope="col">Suggested action</th></tr></thead><tbody>
+        <tr><td>SAMPLE-001</td><td>Phishing URL</td><td>High</td><td>Lookalike domain</td><td>Block and review</td></tr>
+        <tr><td>SAMPLE-002</td><td>Email</td><td>Medium</td><td>Urgency and credential request</td><td>Notify recipient</td></tr>
+        <tr><td>SAMPLE-003</td><td>Network behaviour</td><td>Medium</td><td>Unusual flow pattern</td><td>Investigate host</td></tr></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<section id="difference" class="sec reveal" aria-labelledby="h-diff">
+  <div class="wrap">
+    <p class="eyebrow">05 / Approach</p>
+<h2 id="h-diff">Intended design approach</h2>
+    <ul class="grid diff">
+      <li><h3>One interface</h3><p>Multiple threat surfaces in a single view.</p></li>
+      <li><h3>Connected workflow</h3><p>From detection to recommended response.</p></li>
+      <li><h3>Evidence first</h3><p>Explanations instead of only binary results.</p></li>
+      <li><h3>Analyst in the loop</h3><p>Recommendations a person reviews and decides on.</p></li>
+      <li><h3>Modular</h3><p>Detectors plug into a shared dashboard.</p></li>
+    </ul>
+    <p class="muted">No detection accuracy, false-positive rate or remediation guarantee is claimed.</p>
+  </div>
+</section>
+
+<section id="team" class="sec reveal" aria-labelledby="h-team">
+  <div class="wrap">
+    <p class="eyebrow">06 / Team</p>
+<h2 id="h-team">Team</h2>
+    <div class="grid team">
+      <article class="member"><span class="av" aria-hidden="true">ST</span><h3>Satyapriya Tripathy</h3><p class="role">Team Lead</p><p>Responsible for developing models for URL analysis, NLP-based content analysis, deepfake detection, and network anomaly/technical behaviour detection; backend and frontend integration; dashboard development; and ongoing live-feed, automation and backend integration work.</p></article>
+      <article class="member"><span class="av" aria-hidden="true">BN</span><h3>Bimal Kumar Naik</h3><p class="role">Resource and Project Support</p><p>Contributed PC/internet resources and feedback following analysis and project reviews.</p></article>
+      <article class="member"><span class="av" aria-hidden="true">RP</span><h3>Rohit Kumar Prajapati</h3><p class="role">Presentation Preparation</p><p>Contributed to presentation preparation and communicating the project.</p></article>
+      <article class="member"><span class="av" aria-hidden="true">SM</span><h3>Soumya Ranjan Mishra</h3><p class="role">Malware Triage</p><p>Responsible for malware triage model training.</p></article>
+      <article class="member"><span class="av" aria-hidden="true">AD</span><h3>Abhay Das</h3><p class="role">Account Takeover Detection</p><p>Responsible for account takeover model training.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="install" class="sec reveal" aria-labelledby="h-install">
+  <div class="wrap">
+    <p class="eyebrow">07 / Install</p>
+    <h2 id="h-install">Install CyberShield</h2>
+    <p class="sub">Local installation on Windows: Python backend, React dashboard and optional Sysmon live telemetry.</p>
+    <p><a class="btn primary" href="https://github.com/Satyapt001/Evident" rel="noopener">View on GitHub</a></p>
+    <div class="warnbox">Verify the actual files in the repository before relying on this guide. The commands reflect the project structure used so far and have not been presented as tested on a clean machine.</div>
+
+    <h3 class="sh">Architecture</h3>
+    <div class="code"><pre><code>Windows network activity
+        |
+        v
+Sysmon Windows service
+        |
+        v
+Windows Event Log (Microsoft-Windows-Sysmon/Operational)
+        |
+        v
+CyberShield FastAPI telemetry integration
+        |
+        v
+CyberShield dashboard (React)</code></pre></div>
+    <h3 class="sh">Prerequisites</h3>
+    <div class="wide"><table><thead><tr><th scope="col">Software</th><th scope="col">Version</th><th scope="col">Download</th></tr></thead><tbody><tr><td>Operating system</td><td>Windows 10/11</td><td><a href="https://learn.microsoft.com/en-us/windows/" rel="noopener">learn.microsoft.com/en-us/windows/</a></td></tr><tr><td>Python</td><td>3.11</td><td><a href="https://www.python.org/downloads/" rel="noopener">www.python.org/downloads/</a></td></tr><tr><td>Node.js</td><td>LTS</td><td><a href="https://nodejs.org/" rel="noopener">nodejs.org/</a></td></tr><tr><td>Git</td><td>Latest stable</td><td><a href="https://git-scm.com/downloads" rel="noopener">git-scm.com/downloads</a></td></tr><tr><td>Sysmon</td><td>Latest compatible</td><td><a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon" rel="noopener">learn.microsoft.com/en-us/sysinternals/downloads/sysmon</a></td></tr></tbody></table></div>
+    <p class="muted">Verify with <code>python --version</code>, <code>node --version</code>, <code>npm --version</code> and <code>git --version</code>. Use an Administrator account to install Sysmon.</p>
+
+    <h3 class="sh">Steps</h3>
+    <ol class="install"><li><h3>Clone the repository</h3><div><p>Open PowerShell where you want the project.</p><div class="code"><pre><code>git clone https://github.com/Satyapt001/Evident.git
+cd Evident</code></pre></div></div></li><li><h3>Create the backend environment</h3><div><p>Python 3.11 virtual environment, then dependencies. Use the requirements file the repository maintains: <code>backend\requirements.txt</code>, or <code>requirements.txt</code> in the root. Do not install both.</p><div class="code"><pre><code>py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip setuptools wheel
+pip install -r .\backend\requirements.txt
+python -m pip check</code></pre></div><p class="muted">If activation is blocked, run <code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code> for the current terminal only, then activate again.</p></div></li><li><h3>Configure environment variables</h3><div><p>If the repository has an <code>.env.example</code>, copy it and fill in the values the backend actually reads. Do not invent variable names. Never commit <code>.env</code> or real secrets.</p><div class="code"><pre><code>Copy-Item .env.example .env
+# or, if the template is in the backend folder:
+Copy-Item backend\.env.example backend\.env</code></pre></div></div></li><li><h3>Install Sysmon (Windows live telemetry)</h3><div><div class="warnbox">Starting the backend or frontend does not install or start Sysmon. It is a separate Windows service and needs an Administrator terminal.</div><p>Download Sysmon from the official Microsoft page and extract <code>Sysmon64.exe</code> (for example to <code>C:\Tools\Sysmon</code>). Check whether the project ships a reviewed Sysmon configuration first; if not, use this basic one, replacing the schema version with the value printed by <code>Sysmon64.exe -s</code>.</p><div class="code"><pre><code>cd C:\Tools\Sysmon
+.\Sysmon64.exe -s
+notepad .\cybershield-sysmon.xml</code></pre></div><div class="code"><pre><code>&lt;Sysmon schemaversion="REPLACE_WITH_SUPPORTED_SCHEMA_VERSION"&gt;
+  &lt;EventFiltering&gt;
+    &lt;NetworkConnect onmatch="exclude" /&gt;
+  &lt;/EventFiltering&gt;
+&lt;/Sysmon&gt;</code></pre></div><div class="code"><pre><code>.\Sysmon64.exe -accepteula -i .\cybershield-sysmon.xml
+Get-Service *Sysmon*
+Get-WinEvent -FilterHashtable @{ LogName = "Microsoft-Windows-Sysmon/Operational"; Id = 3 } -MaxEvents 10</code></pre></div><p class="muted">Event ID 3 records network connections. It is not a packet capture. If no events appear, browse a website and run the last command again. To change the configuration later: <code>.\Sysmon64.exe -c .\cybershield-sysmon.xml</code>.</p></div></li><li><h3>Start the backend</h3><div><p>In a normal PowerShell terminal at the project root. Keep it open.</p><div class="code"><pre><code>.\.venv\Scripts\Activate.ps1
+$env:PYTHONPATH = "$(Get-Location)\backend;$(Get-Location)"
+python -m uvicorn app.main:app --app-dir ".\backend" --host 127.0.0.1 --port 8000 --reload</code></pre></div><p>Check <code>http://127.0.0.1:8000/docs</code>. The network model health endpoint is <code>/api/v1/analyze/network/health</code>; it depends on the model artifacts being present.</p></div></li><li><h3>Verify Sysmon telemetry</h3><div><p>With Sysmon and the backend both running, in a second terminal:</p><div class="code"><pre><code>Invoke-RestMethod `
+    -Uri "http://127.0.0.1:8000/api/v1/telemetry/sysmon/events" `
+    -Method GET</code></pre></div><p class="muted">No events? Check the Sysmon service, that Event ID 3 is enabled, the Windows event log contents, the backend terminal output, and that the account running the backend may read the Sysmon event log.</p><div class="warnbox">A Sysmon event is an observation, not an AI-classified threat. Model-based network evaluation is a separate operation, and raw events are not model predictions. The dashboard polls about every five seconds, which does not mean Sysmon produces an event that often.</div></div></li><li><h3>Start the frontend</h3><div><p>In another terminal. Use <code>npm install</code> instead of <code>npm ci</code> if there is no <code>package-lock.json</code>.</p><div class="code"><pre><code>cd frontend\cybergurad-dashboard
+npm ci
+npm run dev</code></pre></div><p>Open <code>http://localhost:5173</code> (or the address Vite prints). If the dashboard shows no data, check that the backend is running, the API base URL is <code>http://127.0.0.1:8000</code>, CORS allows the frontend origin, and the browser Console and Network tabs.</p></div></li><li><h3>Daily startup and shutdown</h3><div><p>Dependencies are installed once. Afterwards: make sure Sysmon is running (<code>Get-Service *Sysmon*</code>), start the backend as in step 5, then run <code>npm run dev</code> in the frontend folder. Stop either server with Ctrl+C and leave the environment with <code>deactivate</code>. Sysmon keeps running independently, including after a restart. To stop it: <code>Stop-Service Sysmon64</code> (use the name shown by <code>Get-Service</code>).</p></div></li></ol>
+
+    <h3 class="sh">Linux and macOS</h3>
+    <p>The backend and frontend can run on Linux or macOS with compatible Python and Node.js. The Sysmon live feed is Windows-only; other systems need a separate supported telemetry collector and integration.</p>
+    <div class="code"><pre><code>git clone https://github.com/Satyapt001/Evident.git
+cd Evident
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r backend/requirements.txt
+export PYTHONPATH="$PWD/backend:$PWD"
+python -m uvicorn app.main:app --app-dir ./backend --host 127.0.0.1 --port 8000 --reload
+# second terminal
+cd Evident/frontend/cybergurad-dashboard &amp;&amp; npm ci &amp;&amp; npm run dev</code></pre></div>
+
+    <h3 class="sh">Troubleshooting</h3>
+    <div class="wide"><table><thead><tr><th scope="col">Issue</th><th scope="col">Suggested solution</th></tr></thead><tbody><tr><td>Python command not found</td><td>Install Python and enable PATH, then reopen the terminal</td></tr><tr><td>Virtual environment activation blocked</td><td>Use the process-scope execution-policy command in step 2</td></tr><tr><td>requirements.txt not found</td><td>Check the backend folder and the project root</td></tr><tr><td>pip dependency conflict</td><td>Run python -m pip check and review the requirements file</td></tr><tr><td>npm command not found</td><td>Install Node.js LTS and reopen the terminal</td></tr><tr><td>npm ci fails</td><td>Confirm package-lock.json exists; otherwise use npm install</td></tr><tr><td>Port 8000 occupied</td><td>Stop the other process or configure another supported port</td></tr><tr><td>Port 5173 occupied</td><td>Use the alternate address Vite prints</td></tr><tr><td>Sysmon service missing</td><td>Install Sysmon from an elevated terminal</td></tr><tr><td>No Event ID 3 events</td><td>Enable NetworkConnect in the Sysmon configuration</td></tr><tr><td>Events exist but dashboard is empty</td><td>Test the telemetry API and read the backend logs</td></tr><tr><td>Backend access denied</td><td>Check Windows event-log permissions for the account running it</td></tr><tr><td>Network model unavailable</td><td>Check model artifact paths and the network health endpoint</td></tr><tr><td>Frontend cannot reach backend</td><td>Check the API URL and CORS configuration</td></tr></tbody></table></div>
+
+    <h3 class="sh">Installation checklist</h3>
+    <ul class="checks"><li><label><input type="checkbox"> Repository cloned</label></li><li><label><input type="checkbox"> Python 3.11 installed</label></li><li><label><input type="checkbox"> Virtual environment created and activated</label></li><li><label><input type="checkbox"> Backend dependencies installed</label></li><li><label><input type="checkbox"> Environment variables configured</label></li><li><label><input type="checkbox"> Sysmon installed as Administrator</label></li><li><label><input type="checkbox"> Sysmon network connection monitoring enabled</label></li><li><label><input type="checkbox"> Event ID 3 verified in Windows Event Log</label></li><li><label><input type="checkbox"> Backend started</label></li><li><label><input type="checkbox"> Telemetry endpoint returns events</label></li><li><label><input type="checkbox"> Frontend dependencies installed</label></li><li><label><input type="checkbox"> Frontend started</label></li><li><label><input type="checkbox"> Dashboard shows telemetry from the backend</label></li></ul>
+
+    <h3 class="sh">References</h3>
+    <ul class="refs"><li><a href="https://github.com/Satyapt001/Evident" rel="noopener">CyberShield repository</a></li><li><a href="https://docs.python.org/3/library/venv.html" rel="noopener">Python venv</a></li><li><a href="https://nodejs.org/" rel="noopener">Node.js</a></li><li><a href="https://docs.npmjs.com/" rel="noopener">npm docs</a></li><li><a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon" rel="noopener">Microsoft Sysmon</a></li><li><a href="https://fastapi.tiangolo.com/" rel="noopener">FastAPI</a></li><li><a href="https://www.uvicorn.org/" rel="noopener">Uvicorn</a></li></ul>
+  </div>
+</section>
+
+<section id="faq" class="sec reveal" aria-labelledby="h-faq">
+  <div class="wrap narrow">
+    <p class="eyebrow">08 / FAQ</p>
+<h2 id="h-faq">Frequently asked questions</h2>
+    <details><summary>What is CyberShield?</summary><p>An AI-powered cyber threat, phishing and digital impersonation detection and response system that aims to combine several analysis capabilities in one analyst workflow.</p></details>
+    <details><summary>What types of threats can it analyse?</summary><p>Network anomalies and technical behaviour, phishing URLs, social-engineering emails, deepfake and impersonation media, and suspicious files (malware triage).</p></details>
+    <details><summary>Who is the intended user?</summary><p>Organisations and general users, and technical users such as IT teams, security professionals, SOC analysts and security administrators.</p></details>
+    <details><summary>How does the detection-to-response workflow operate?</summary><p>Evidence is submitted, a detector classifies it, risk is assessed, supporting indicators are explained, relevant findings become alerts or incidents, and suggested actions are offered for review. Integration work for this flow is ongoing.</p></details>
+    <details><summary>Does CyberShield automatically take remediation actions?</summary><p>No automatic remediation is claimed. Recommendations are suggestions for a person to review. Any automated action would be a separate capability.</p></details>
+    <details><summary>Is the GitHub repository available yet?</summary><p>Yes. The project is on <a href="https://github.com/Satyapt001/Evident" rel="noopener">GitHub</a>. Check the repository for the current state of each capability.</p></details>
+    <details><summary>Is the backend integrated with this landing page?</summary><p>No. This page is static and shows no live data. The FastAPI backend and dashboard are in the repository and are installed separately.</p></details>
+    <details><summary>How can I install CyberShield when the source is released?</summary><p>Follow the Install section of this page, and check the repository files first. Live Windows telemetry also needs Sysmon, which is installed separately.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div><a class="brand" href="#top"><svg class="emblem" aria-hidden="true"><use href="#emblem"/></svg>CyberShield</a><p class="muted">AI-Powered Cyber Threat, Phishing and Digital Impersonation Detection and Response System.</p></div>
+    <nav aria-label="Footer"><a href="#features">Capabilities</a><a href="#workflow">Workflow</a><a href="#preview">Preview</a><a href="#team">Team</a><a href="#install">Install</a><a href="#faq">FAQ</a></nav>
+    <p class="muted"><a href="https://github.com/Satyapt001/Evident" rel="noopener">GitHub repository</a></p>
+  </div>
+  <p class="wrap muted small">This is an informational product page. It does not provide live threat monitoring.<br>&copy; <span id="yr">2026</span> CyberShield project team. All rights reserved.</p>
+</footer>
+<script type="module" src="script.js"></script>
+</body>
+</html>
