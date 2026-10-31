@@ -1,683 +1,565 @@
-# CyberShield — AI-Powered Cyber Threat Detection & Response
+<div align="center">
 
-> **Project status:** Active development  
-> **Project type:** AI/ML · Cybersecurity · Threat Intelligence · Security Operations Automation
+# CyberShield
 
-CyberShield is a cybersecurity platform designed to help security analysts identify suspicious activity, classify potential threats, assess risk, understand detection evidence, and choose appropriate response actions through a unified dashboard.
+**AI-powered cyber threat, phishing and digital impersonation detection and response.**
 
-The project combines machine-learning-based detection with security analysis and a planned agentic workflow to help reduce the manual effort involved in reviewing multiple types of cyber threats.
+One analyst-oriented workflow for URLs, emails, media, network behaviour and files, from detection to recommended response.
 
-**Important:** CyberShield is a project under development. Some detection and analysis modules have been implemented, while live network-flow classification, end-to-end automation, and additional integrations remain under development or validation. This repository will document verified capabilities as they become available.
+![Status](https://img.shields.io/badge/status-active%20development-00d4ff)
+![Python](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/frontend-React%20%2B%20TypeScript-61DAFB?logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/build-Vite-646CFF?logo=vite&logoColor=white)
+![Platform](https://img.shields.io/badge/live%20telemetry-Windows%2010%2F11-0078D4?logo=windows&logoColor=white)
 
----
+[Capabilities](#capabilities) · [Workflow](#detection-to-response-workflow) · [Quick start](#quick-start-windows) · [Installation guide](#full-installation-guide) · [API](#api-reference) · [Roadmap](#roadmap) · [Team](#team)
 
-## Table of Contents
+</div>
 
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Threat Detection Modules](#threat-detection-modules)
-- [Detection-to-Response Workflow](#detection-to-response-workflow)
-- [Technology Stack](#technology-stack)
-- [Datasets and Model References](#datasets-and-model-references)
-- [Deepfake Detection Integration](#deepfake-detection-integration)
-- [System Architecture](#system-architecture)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Running the Application](#running-the-application)
-- [API and Integration Status](#api-and-integration-status)
-- [Project Structure](#project-structure)
-- [Team and Contributions](#team-and-contributions)
-- [Limitations and Responsible Use](#limitations-and-responsible-use)
-- [Future Work](#future-work)
-- [Contributing](#contributing)
-- [Acknowledgements and Citations](#acknowledgements-and-citations)
-- [License](#license)
+> [!NOTE]
+> **Naming:** the product is **CyberShield**; this repository is named **Evident**. The React dashboard folder is `cybergurad-dashboard` (spelling as committed).
+>
+> **Status:** CyberShield is under active development. Some modules are implemented, others are being validated or built. This README says which is which. Nothing here is a claim of accuracy, completeness or production readiness.
 
 ---
 
-## Overview
+## Why CyberShield
 
-Cyber threats increasingly involve multiple attack vectors, including malicious URLs, phishing messages, manipulated media, suspicious network behavior, malware, and compromised user accounts.
+Threats arrive through many channels at once: malicious links, phishing emails, manipulated media, suspicious network behaviour, malware and compromised accounts. Analysts often check each in a separate tool, correlate evidence by hand, and decide on severity and next steps without enough context.
 
-Traditional workflows can require analysts to switch between separate tools, manually correlate evidence, determine severity, prepare reports, and decide what action to take.
+CyberShield's goal is a single, explainable investigation workflow:
 
-CyberShield aims to bring these activities into a unified security operations workflow.
+- **Detect** with specialised machine-learning and analysis modules.
+- **Explain** each finding with the evidence behind it, not only a label.
+- **Prioritise** with a shared risk and severity view.
+- **Recommend** next steps while keeping a human in control of sensitive actions.
 
-### Our objectives
+Built for security analysts, SOC teams and administrators, and for students and developers exploring applied AI in cybersecurity.
 
-- Detect potential cyber threats using specialized machine-learning and analysis modules.
-- Analyze suspicious URLs and email content for phishing and social-engineering indicators.
-- Examine submitted media for possible deepfake manipulation.
-- Identify anomalous network behavior and suspicious technical activity.
-- Support malware triage and account-takeover detection.
-- Present findings, risk indicators, and explanations through a unified dashboard.
-- Help analysts prioritize incidents and select appropriate response actions.
-- Progress toward controlled automation while preserving human oversight for sensitive actions.
+## At a glance
 
-CyberShield is intended to support security analysts and organizations, as well as students and developers exploring applied AI in cybersecurity.
-
----
-
-## Key Features
-
-### 1. Phishing and malicious URL analysis
-
-Analyze a submitted URL using a dedicated phishing-detection model and available enrichment services.
-
-Intended capabilities include:
-
-- URL and website feature analysis.
-- Phishing-versus-legitimate classification.
-- Risk scoring and severity categorization.
-- Threat-intelligence enrichment when supported sources are available.
-- Explanations and recommended next steps.
-
-**Dataset:** PhiUSIIL Phishing URL Dataset.
-
-### 2. Email and social-engineering analysis
-
-Analyze email sender information, subject lines, and message content for suspicious patterns.
-
-Detection indicators may include:
-
-- Urgency and pressure tactics.
-- Threats involving account suspension or restricted access.
-- Requests for credentials or identity verification.
-- Financial manipulation.
-- Impersonation-related language.
-- Suspicious attachment lures.
-- URLs and domains extracted from email text.
-
-When URLs are present, the workflow can attempt to use the URL-analysis service for additional evidence.
-
-### 3. Deepfake analysis and detection
-
-Analyze submitted images or supported media inputs for possible synthetic or manipulated content.
-
-The project uses a CLIP ViT-B/16-based approach, with DF40 as a deepfake research dataset reference.
-
-The exact preprocessing, model weights, inference method, and performance must be documented against the implementation actually deployed in this repository.
-
-### 4. Network anomaly and technical-behavior detection
-
-Use a trained machine-learning pipeline to evaluate structured network-flow features and identify traffic patterns associated with potential threats.
-
-The current Model 3 design uses:
-
-- **Dataset:** CIC-IDS2017.
-- **Classifier:** HistGradientBoosting.
-- **Input:** A structured vector of 67 network-flow features in the current production artifact.
-
-A trained model accepting a feature vector is not, by itself, proof of live network monitoring. Reliable live classification requires validated packet capture, flow construction, feature extraction, and compatibility checks.
-
-### 5. Malware triage
-
-Support preliminary analysis and prioritization of potentially malicious files using a dedicated malware-analysis model.
-
-The project has a LightGBM-based malware model artifact. Supported file formats, extraction methods, model input requirements, and detection performance should be documented and tested before release.
-
-Malware triage is intended to support investigation, not to replace sandboxing, endpoint protection, or forensic analysis.
-
-### 6. Account-takeover detection
-
-A separate account-takeover detection capability is part of the project scope.
-
-Its final dataset, features, model, evaluation results, and production integration should be documented when those components are validated.
-
-### 7. Security operations dashboard
-
-The dashboard is intended to give analysts a unified view of:
-
-- Detection results and incident records.
-- Risk scores and severity levels.
-- Evidence and explanations.
-- Available threat-intelligence findings.
-- Recommendations and response status.
-- Operational telemetry and analysis health.
-
-The availability of each dashboard feature depends on the corresponding backend integration.
-
----
-
-## Threat Detection Modules
-
-| Module | Dataset or source | Model or approach | Status |
-|---|---|---|---|
-| Phishing and URL detection | PhiUSIIL | Dedicated phishing classifier; Random Forest is used in the project’s URL-analysis stack | Implemented; verify current API and model health |
-| Email and social-engineering analysis | Submitted email content and extracted URLs | Rule-based indicators combined with URL-analysis results | Implemented; further validation required |
-| Network anomaly detection | CIC-IDS2017 | HistGradientBoosting Classifier | Model artifact available; live-flow validation ongoing |
-| Deepfake detection | DF40 research dataset | CLIP ViT-B/16-based approach | Integration reported; validate inference configuration |
-| Malware triage | Project-specific model inputs and training data | LightGBM model artifact | Model artifact available; document supported inputs and validation |
-| Account-takeover detection | To be documented | To be documented | Training and integration details to be confirmed |
-| Agentic response workflow | Detection outputs and incident evidence | Planned orchestration, policy checks, and analyst approval | In development |
-
-The table describes the current project direction and known implementation state. It is not a claim that all modules are production-ready or that their models achieve any particular accuracy.
-
----
-
-## Detection-to-Response Workflow
-
-CyberShield is designed around the following workflow:
-
-**Detection → Classification → Risk Assessment → Explanation → Alert → Recommended Response → Controlled Action**
-
-### Stage 1 — Detection
-
-A module analyzes an input such as a URL, email, image, network flow, or file.
-
-The system should retain the source and type of input so that findings from different modules are not confused.
-
-### Stage 2 — Classification
-
-The appropriate model or analysis component produces a prediction, such as a potential phishing URL, suspicious network flow, or possible deepfake.
-
-Classification must be based on the evidence and input type supported by that particular model.
-
-### Stage 3 — Risk assessment
-
-The workflow combines available evidence into a risk assessment.
-
-A risk score is not automatically the same as a calibrated probability. Its meaning should be documented, including the thresholds used to assign severity.
-
-### Stage 4 — Explanation
-
-The analyst receives relevant evidence, such as triggered indicators, suspicious URL characteristics, model output, or available threat-intelligence matches.
-
-Explanations should distinguish observed facts from model inferences.
-
-### Stage 5 — Alert and incident management
-
-The platform can record findings and present them for analyst review. Incident records should include timestamps, source information, severity, and investigation context where supported.
-
-### Stage 6 — Recommended response
-
-The system suggests actions appropriate to the threat and the available evidence.
-
-Possible recommendations include:
-
-- Review and escalate an incident.
-- Block a confirmed malicious URL through an approved control.
-- Quarantine a suspicious file in a controlled environment.
-- Investigate unusual network activity.
-- Request additional identity verification.
-- Preserve evidence for incident response.
-
-These are examples of possible recommendations, not a claim that every action is currently automated.
-
-### Stage 7 — Controlled action
-
-Future agentic orchestration can coordinate approved actions through integrated security tools.
-
-High-impact actions should require appropriate authorization, policy validation, audit logging, and human approval. An AI prediction alone should not trigger an irreversible response.
-
----
-
-## Technology Stack
-
-The project uses or is designed around the following technologies. Exact versions should be recorded in the repository's dependency and lock files.
-
-| Layer | Technologies |
+| | |
 |---|---|
-| Frontend | React, TypeScript, Vite, Tailwind CSS |
-| Backend API | Python, FastAPI |
-| Machine learning | scikit-learn, LightGBM, PyTorch |
-| URL and email analysis | Python-based analysis services and model integration |
-| Deepfake analysis | CLIP ViT-B/16-based workflow |
-| Data processing | pandas, NumPy |
-| Network analysis | Structured flow features and packet/flow extraction tooling |
-| Incident management | Backend incident records and analysis metadata |
-| Future integrations | Security tools, threat-intelligence providers, and approved response APIs |
-
-Some components may use additional dependencies. Refer to the actual dependency files before installing or deploying.
+| **Problem statement** | PS9: AI-powered cyber threat, phishing and digital impersonation detection and response system |
+| **Backend** | Python 3.11, FastAPI, Uvicorn |
+| **Frontend** | React, TypeScript, Vite, Tailwind CSS |
+| **ML** | scikit-learn, LightGBM, PyTorch, pandas, NumPy |
+| **Live telemetry** | Windows Sysmon (Event ID 3, network connections) through a FastAPI endpoint |
+| **Human oversight** | Recommendations only; automated response is not enabled |
+| **License** | Not yet specified (see [License](#license)) |
 
 ---
 
-## Datasets and Model References
+## Capabilities
 
-The datasets below are research or training references. Their use does not imply that every sample is included in the repository or that the project was trained from scratch on every dataset.
+Status key: **Implemented** (working, still being validated) · **Validating** (artifact exists, evaluation or integration ongoing) · **In development** (not usable yet).
 
-### 1. PhiUSIIL Phishing URL Dataset
+| Module | What it does | Data / model | Status |
+|---|---|---|---|
+| **Phishing and URL analysis** | Classifies a URL, adds risk score, severity and threat-intelligence enrichment when sources are available | PhiUSIIL dataset; Random Forest in the URL stack | Implemented |
+| **Email and social-engineering analysis** | Flags urgency, account-suspension threats, credential requests, financial manipulation, impersonation language and attachment lures; extracts URLs and sends them to URL analysis | Rule-based indicators plus URL results | Implemented |
+| **Network anomaly detection** | Classifies structured network-flow records | CIC-IDS2017; HistGradientBoosting; 67-feature input | Validating (live-flow classification not yet validated) |
+| **Windows Sysmon telemetry** | Reads and exposes recent Sysmon network-connection events to the dashboard | Windows Event Log | Implemented (observations, not predictions) |
+| **Deepfake analysis** | Analyses submitted images for possible manipulation | CLIP ViT-B/16-based approach; DF40 as research reference | Validating |
+| **Malware triage** | Preliminary file analysis and prioritisation | LightGBM model artifact | Validating |
+| **Account-takeover detection** | Detects likely account compromise | To be documented | In development |
+| **Agentic response workflow** | Orchestrated, policy-checked, analyst-approved actions | Detection outputs and incident evidence | In development |
+| **Security dashboard** | Findings, incidents, severity, evidence, telemetry and recommendations | React app | Available; each view depends on its backend integration |
 
-- **Purpose:** Phishing URL and website classification.
-- **Publisher:** UCI Machine Learning Repository.
-- **Size:** 235,795 instances and 54 features, according to the dataset record.
-- **License:** CC BY 4.0, subject to the dataset's attribution requirements.
-
-Links:
-
-- [Official dataset page](https://archive.ics.uci.edu/dataset/967/phiusil-phishing-url-dataset)
-- [Dataset paper DOI](https://doi.org/10.1016/j.cose.2023.103545)
-
-The dataset contains legitimate and phishing examples with URL and website-derived features. Its original class labels use `1` for legitimate and `0` for phishing, so confirm the label mapping used by any preprocessing or trained model.
-
-### 2. CIC-IDS2017
-
-- **Purpose:** Network intrusion and anomaly detection research.
-- **Publisher:** Canadian Institute for Cybersecurity, University of New Brunswick.
-- **Data types:** Network packet captures and labeled flow data.
-- **Project model:** HistGradientBoosting Classifier using a 67-feature production schema.
-
-Links:
-
-- [Official CIC-IDS2017 dataset page](https://www.unb.ca/cic/datasets/ids-2017.html)
-- [CICFlowMeter repository](https://github.com/ahlashkari/CICFlowMeter)
-
-The dataset includes benign traffic and multiple attack scenarios. For reproducible inference, the flow extractor must generate features in the same order, with the same definitions and units expected by the trained model.
-
-### 3. DF40 — Deepfake Detection Dataset
-
-- **Purpose:** Research and evaluation of deepfake detection across different generation methods.
-- **Project approach:** CLIP ViT-B/16-based image analysis.
-- **Original research:** *DF40: Toward Next-Generation Deepfake Detection*.
-
-Links:
-
-- [Official DF40 repository](https://github.com/YZY-stack/DF40)
-- [DF40 paper](https://arxiv.org/abs/2406.13495)
-- [OpenAI CLIP repository](https://github.com/openai/CLIP)
-- [OpenAI CLIP model card](https://github.com/openai/CLIP/blob/main/model-card.md)
-
-DF40 contains data generated by multiple manipulation methods and includes image/video research resources. The upstream repository describes large dataset downloads and provides its own training and inference workflows.
-
-**Integration note:** CyberShield's use of CLIP ViT-B/16 should not be confused with using the original DF40-trained CLIP checkpoint. Record the exact model weights, preprocessing, prompts or classification head, and training/fine-tuning procedure used by CyberShield.
-
-The upstream DF40 repository specifies a **CC BY-NC 4.0** license for its dataset and code. Review the upstream terms before redistributing its assets or using them commercially.
-
-### 4. Malware and account-takeover data
-
-The exact datasets, licenses, and splits for the malware triage and account-takeover modules must be added after the training sources have been verified.
-
-Do not publish confidential, proprietary, or restricted datasets. Where a dataset cannot be redistributed, provide its official source and acquisition instructions instead.
+> [!IMPORTANT]
+> **Telemetry is not detection.** A Sysmon event shown in the dashboard is an observation. It is not an AI-classified threat and has no risk score unless a model evaluation is run separately. Live classification needs validated packet capture, flow construction and feature extraction that match the trained model.
 
 ---
 
-## Deepfake Detection Integration
+## Detection-to-response workflow
 
-The deepfake module is intended to provide a media-analysis capability inside the broader CyberShield workflow.
+```mermaid
+flowchart LR
+    A[Detection] --> B[Classification] --> C[Risk assessment] --> D[Explanation] --> E[Alert / incident] --> F[Recommended response] --> G[Controlled action]
+    G -. planned, human approved .-> H[(Approved integrations)]
+```
 
-### High-level processing flow
+| Stage | What happens |
+|---|---|
+| **1. Detection** | A module receives a URL, email, image, network flow or file. The input type is kept so results from different modules are never mixed up. |
+| **2. Classification** | The appropriate model or rule set produces a finding, using only the evidence that module supports. |
+| **3. Risk assessment** | Available results and evidence are combined into severity. A risk score is not a calibrated probability unless calibration has been measured. |
+| **4. Explanation** | The analyst sees the supporting indicators, separating observed facts from model inferences. |
+| **5. Alert / incident** | Findings are recorded with timestamps, source and severity for review. |
+| **6. Recommended response** | Suggested actions: escalate, block a confirmed malicious URL through an approved control, quarantine a file in a controlled environment, investigate network activity, request identity verification, preserve evidence. |
+| **7. Controlled action** | *Planned.* Approved actions through integrated tools, behind authorisation, policy checks, audit logging and human approval. A prediction alone must not trigger an irreversible response. |
 
-1. The user submits an image or supported media input through the analysis interface.
-2. The backend validates the input type and size.
-3. The media is preprocessed according to the configured model's requirements.
-4. The CLIP ViT-B/16-based component performs its configured inference.
-5. The backend returns the supported prediction and analysis metadata.
-6. The dashboard displays the result for review.
-7. If integrated with incident management, the result can become evidence for an investigation or risk assessment.
-
-### Important implementation details to document
-
-- Accepted formats and maximum upload size.
-- Image resizing, face detection, cropping, and normalization.
-- Exact CLIP checkpoint and whether any fine-tuning is applied.
-- How the real/fake classification is produced.
-- Whether video inputs are processed frame-by-frame.
-- Evaluation datasets, train/validation/test splits, and metrics.
-- GPU and CPU requirements.
-- API endpoint and response schema.
-- Failure handling for unsupported or low-quality inputs.
-
-### Known limitations
-
-A generic pretrained CLIP model does not automatically constitute a validated deepfake detector. The classification method must be specified and evaluated for the intended task. Results should be treated as supporting evidence rather than definitive proof that a media file is authentic or manipulated.
+Recommendations and automated actions are different things. Today CyberShield recommends; it does not remediate.
 
 ---
 
-## System Architecture
-
-The intended high-level architecture is shown below.
+## Architecture
 
 ```mermaid
 flowchart TD
-    A[Analyst / User] --> B[CyberShield Web Dashboard]
-    B --> C[Backend API - FastAPI]
-
-    C --> D[URL and Phishing Analysis]
-    C --> E[Email and Social Engineering Analysis]
-    C --> F[Network Anomaly Detection]
-    C --> G[Deepfake Analysis]
-    C --> H[Malware Triage]
-    C --> I[Account Takeover Detection]
-
-    D --> J[Normalize Findings]
-    E --> J
-    F --> J
-    G --> J
-    H --> J
-    I --> J
-
-    J --> K[Risk Assessment and Evidence]
-    K --> L[Incident Management]
-    K --> M[Analyst Explanation and Alert]
-    M --> N[Recommended Response]
-    N --> O[Policy Checks and Human Approval]
-    O --> P[Approved Response Integrations]
+    U[Analyst] --> UI[React dashboard]
+    UI --> API[FastAPI backend]
+    API --> URL[URL and phishing]
+    API --> EM[Email and social engineering]
+    API --> NET[Network anomaly]
+    API --> DF[Deepfake]
+    API --> MAL[Malware triage]
+    API --> ATO[Account takeover]
+    API --> TEL[Sysmon telemetry]
+    URL & EM & NET & DF & MAL & ATO --> N[Normalised findings]
+    N --> R[Risk and evidence]
+    R --> I[Incidents]
+    R --> X[Explanation and alert]
+    X --> REC[Recommended response]
+    REC --> P[Policy check and human approval]
 ```
 
-This diagram represents the intended architecture, not a guarantee that all modules already share a single orchestration service. The final repository should document actual API routes, data contracts, and integration boundaries.
+This is the intended architecture. Treat the running app's OpenAPI document as the source of truth for actual routes and schemas.
 
-### Architecture principles
+**Design principles:** modular detectors that can be tested alone; a consistent result contract per module; evidence preserved with every score; human approval for sensitive actions; audit-friendly records (input source, time, model version, result); a failed enrichment service is reported as *unavailable*, never as *safe*; and restricted access to uploaded media, emails and network data.
 
-- **Modularity:** Detection models should remain independently testable.
-- **Consistent contracts:** Each module should return a documented result format.
-- **Evidence-based decisions:** Risk assessments should preserve their supporting indicators.
-- **Human oversight:** Sensitive response actions should be gated by explicit policy.
-- **Auditability:** Record the input source, analysis time, model version, result, and approved action where appropriate.
-- **Graceful degradation:** A failed threat-intelligence service should be reported as unavailable, not treated as proof that an indicator is safe.
-- **Privacy:** Restrict access to uploaded media, emails, network data, and incident records.
+### Windows live-telemetry path
+
+```mermaid
+flowchart LR
+    W[Windows network activity] --> S[Sysmon service]
+    S --> L[Event Log: Microsoft-Windows-Sysmon/Operational]
+    L --> B[FastAPI telemetry endpoint]
+    B --> D[Dashboard, polls about every 5 s]
+```
+
+Sysmon is a separate Windows service. Starting the backend or frontend does **not** install or start it.
 
 ---
 
-## Installation
+## Quick start (Windows)
 
-The repository is marked as **coming soon**. Once it is published, replace the placeholder repository URL and verify these commands against the committed files.
+Minimal path to a running dashboard. Everything in this section is expanded in the [full guide](#full-installation-guide).
 
-### Prerequisites
+**Prerequisites:** Windows 10/11, [Python 3.11](https://www.python.org/downloads/), [Node.js LTS](https://nodejs.org/), [Git](https://git-scm.com/downloads). [Sysmon](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon) is needed only for live telemetry.
 
-- Git
-- Python 3.11, matching the current development environment
-- Node.js and npm versions compatible with the frontend lock file
-- A terminal such as PowerShell on Windows
-- Optional: compatible NVIDIA GPU and CUDA setup for workloads that support GPU acceleration
+```powershell
+# 1. Clone
+git clone https://github.com/Satyapt001/Evident.git
+cd Evident
 
-### 1. Clone the repository
+# 2. Backend environment
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip setuptools wheel
+pip install -r .\backend\requirements.txt
 
-```bash
-git clone (https://github.com/Satyapt001/Evident.git)
-cd <YOUR-REPOSITORY-DIRECTORY>
+# 3. Start the backend (keep this terminal open)
+$env:PYTHONPATH = "$(Get-Location)\backend;$(Get-Location)"
+python -m uvicorn app.main:app --app-dir ".\backend" --host 127.0.0.1 --port 8000 --reload
 ```
 
-The repository URL is a placeholder until the project is published.
+In a **second** terminal:
 
-### 2. Create and activate the Python environment
+```powershell
+cd Evident\frontend\cybergurad-dashboard
+npm ci
+npm run dev
+```
 
-**Windows PowerShell**
+Then open <http://localhost:5173> (or the address Vite prints) and the API docs at <http://127.0.0.1:8000/docs>.
+
+> [!WARNING]
+> The commands reflect the project structure used so far. Check them against the files in this repository (for example where `requirements.txt` lives) before treating them as a clean-machine-tested procedure.
+
+---
+
+## Full installation guide
+
+<details>
+<summary><b>1. Prerequisites and verification</b></summary>
+
+| Software | Version | Download |
+|---|---|---|
+| Operating system | Windows 10/11 | Microsoft |
+| Python | 3.11 | https://www.python.org/downloads/ |
+| Node.js | LTS | https://nodejs.org/ |
+| Git | Latest stable | https://git-scm.com/downloads |
+| Sysmon (live telemetry only) | Latest compatible | https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon |
+
+```powershell
+python --version
+py --version
+node --version
+npm --version
+git --version
+```
+
+If a command is not recognised, install the software, make sure it is on `PATH`, and reopen PowerShell. Installing Sysmon needs an Administrator account.
+
+</details>
+
+<details>
+<summary><b>2. Backend environment</b></summary>
 
 ```powershell
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
+python -m pip install --upgrade pip setuptools wheel
 ```
 
-If PowerShell blocks activation scripts, you can invoke the environment's Python directly instead of changing machine-wide execution policies:
+If PowerShell blocks activation, relax the policy for **this terminal only**, then activate again:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade pip
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
-### 3. Install backend dependencies
-
-If the repository contains a backend requirements file:
+Install the requirements file the repository actually contains. Check first, and do not install both:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
+Test-Path .\backend\requirements.txt
+Test-Path .\requirements.txt
+pip install -r .\backend\requirements.txt   # or: pip install -r .\requirements.txt
+python -m pip check
 ```
 
-If the project uses `pyproject.toml`, Poetry, or another dependency manager, follow the committed configuration instead. Do not create a new requirements file by guessing dependencies.
+`pip check` reports dependency conflicts. `(.venv)` in the prompt means the environment is active.
 
-### 4. Install frontend dependencies
+</details>
 
-```powershell
-Set-Location frontend\cybergurad-dashboard
-npm ci
-```
+<details>
+<summary><b>3. Environment variables</b></summary>
 
-Use `npm ci` when the repository includes a compatible `package-lock.json`. Otherwise, use the package manager and lock file committed by the project.
-
-### 5. Configure environment variables
-
-Create the required local environment files from the project's example files, if provided.
+If the repository provides `.env.example` (or `.env.template`), copy it and fill in only the variables the backend actually reads:
 
 ```powershell
 Copy-Item .env.example .env
+# or, if the template is in the backend folder:
+Copy-Item backend\.env.example backend\.env
 ```
 
-The actual location and required variables must be confirmed from the published repository. Do not commit API keys, credentials, tokens, or private dataset paths.
-
-### 6. Download model artifacts
-
-Download or place model artifacts using the instructions provided by the repository maintainers.
-
-Large models and restricted datasets may be hosted separately. Verify their source, checksum, licensing, and compatibility before loading them.
-
-### 7. Start the backend
-
-From the project root, the current development setup has used the following launch command:
-
-```powershell
-$env:PYTHONPATH = "$(Get-Location)\backend;$(Get-Location)"
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir ".\backend" --host 127.0.0.1 --port 8000 --reload
-```
-
-This command assumes the backend entry point remains `backend/app/main.py` and that dependencies and required settings are installed.
-
-Keep the backend terminal open. If startup fails, resolve the reported dependency, import, model-path, or configuration issue before proceeding.
-
-### 8. Start the frontend
-
-Open a second terminal:
-
-```powershell
-Set-Location "frontend\cybergurad-dashboard"
-npm run dev
-```
-
-Open the local URL printed by Vite.
-
-Configure the frontend API base URL according to the actual project environment configuration. The current development code has used `http://localhost:8000` as a default, while the phishing API module has used `http://127.0.0.1:8000/api/v1`. Verify and standardize these settings before release.
-
-### 9. Verify the setup
-
-Before using the dashboard, verify:
-
-- The frontend loads.
-- The backend starts without import errors.
-- The API health endpoint responds, if implemented.
-- Required model artifacts load successfully.
-- A test request returns the documented response schema.
-- Failed model or enrichment calls are reported clearly.
-- The frontend displays unavailable results without crashing.
-
-Use benign test inputs and an isolated test environment. Some analysis requests may create incident records.
-
----
-
-## Configuration
-
-The final repository should include an `.env.example` documenting supported variables, without real secrets.
-
-Potential configuration areas include:
+Never commit API keys, passwords, credentials, private certificates or real secrets, and keep `.env` out of Git. Commit an `.env.example` with placeholders only.
 
 | Setting | Purpose |
 |---|---|
 | Backend host and port | Local API binding |
 | Frontend API base URL | Frontend-to-backend communication |
-| Model artifact paths | Locations of trained models |
+| Model artifact paths | Location of trained models |
 | Upload size limits | Safe handling of media and files |
-| Request timeout | Bound external or model-processing operations |
+| Request timeout | Bound model and external calls |
 | Threat-intelligence credentials | Optional enrichment providers |
-| Logging level | Development and diagnostic output |
-| Database settings | Incident storage, if database-backed storage is configured |
+| Logging level | Diagnostics |
+| Database settings | Incident storage, if configured |
 
-Only variables actually read by the code should be included in the final example file.
+Bind to `127.0.0.1` for local work. Do not expose an unauthenticated development server to the internet.
 
-For local development, bind to `127.0.0.1` unless remote access is specifically required. Do not expose an unauthenticated development server directly to the public internet.
+**Model artifacts:** large models and restricted datasets may be hosted separately. Follow the maintainers' instructions and verify source, checksum, licence and compatibility before loading anything.
+
+</details>
+
+<details>
+<summary><b>4. Sysmon (Windows live telemetry, optional)</b></summary>
+
+Sysmon is a Microsoft Sysinternals service and driver that writes configured events to the Windows Event Log. Event ID 3 (network connection) is **off by default** and must be enabled in the configuration. It records connections, not packets or bytes transferred.
+
+1. Download Sysmon from the official page, extract it, and put `Sysmon64.exe` somewhere convenient, for example `C:\Tools\Sysmon\`.
+2. Open **PowerShell as Administrator** and go to that folder.
+3. Check the schema version your binary supports:
+
+```powershell
+cd C:\Tools\Sysmon
+.\Sysmon64.exe -s
+```
+
+4. If the project ships a reviewed Sysmon configuration, use that. Otherwise create a basic one with `notepad .\cybershield-sysmon.xml`, replacing the schema version with the value from the previous step:
+
+```xml
+<Sysmon schemaversion="REPLACE_WITH_SUPPORTED_SCHEMA_VERSION">
+  <EventFiltering>
+    <NetworkConnect onmatch="exclude" />
+  </EventFiltering>
+</Sysmon>
+```
+
+5. Install it (or update an existing install with `-c`):
+
+```powershell
+.\Sysmon64.exe -accepteula -i .\cybershield-sysmon.xml
+.\Sysmon64.exe -c .\cybershield-sysmon.xml
+```
+
+6. Verify the service and the event channel:
+
+```powershell
+Get-Service *Sysmon*
+Get-WinEvent -ListLog "Microsoft-Windows-Sysmon/Operational"
+Get-WinEvent -FilterHashtable @{
+    LogName = "Microsoft-Windows-Sysmon/Operational"
+    Id = 3
+} -MaxEvents 10
+```
+
+No events yet? Open a website to generate traffic and run the last command again. If the service exists but is stopped, start it with `Start-Service Sysmon64` (use the name `Get-Service` shows).
+
+Review any Sysmon configuration carefully before using it on production systems.
+
+</details>
+
+<details>
+<summary><b>5. Start the backend</b></summary>
+
+In a normal (non-admin) PowerShell terminal at the project root:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+$env:PYTHONPATH = "$(Get-Location)\backend;$(Get-Location)"
+python -m uvicorn app.main:app --app-dir ".\backend" --host 127.0.0.1 --port 8000 --reload
+```
+
+Keep it open. Check <http://127.0.0.1:8000/docs> and the network model health route `GET /api/v1/analyze/network/health`. The network model previously reported ready with an expected input of 67 features; that depends on the model artifacts being present.
+
+</details>
+
+<details>
+<summary><b>6. Verify Sysmon telemetry</b></summary>
+
+With Sysmon **and** the backend running, in another terminal:
+
+```powershell
+Invoke-RestMethod `
+    -Uri "http://127.0.0.1:8000/api/v1/telemetry/sysmon/events" `
+    -Method GET
+```
+
+Checklist: Sysmon service running, Event ID 3 enabled, events present in the Sysmon Operational log, backend running, endpoint returns observations.
+
+Empty result? Check the service, the `NetworkConnect` configuration, the event log contents, the backend terminal for access or parsing errors, and that the account running the backend may read the Sysmon event log.
+
+The dashboard polls roughly every five seconds. That is a polling interval, not how often Sysmon produces events.
+
+</details>
+
+<details>
+<summary><b>7. Start the frontend</b></summary>
+
+```powershell
+cd frontend\cybergurad-dashboard
+npm ci          # use "npm install" if there is no package-lock.json
+npm run dev
+```
+
+Open the address Vite prints, normally <http://localhost:5173>.
+
+If the dashboard shows no data: confirm the backend is running, the API base URL points to `http://127.0.0.1:8000`, CORS allows the frontend origin, and read the browser Console and Network tabs. Development code has used both `http://localhost:8000` and `http://127.0.0.1:8000/api/v1` as defaults; make sure they agree.
+
+</details>
+
+<details>
+<summary><b>8. Daily startup and shutdown</b></summary>
+
+Dependencies are installed once. Each session:
+
+1. `Get-Service *Sysmon*` and start it if stopped (live telemetry only).
+2. Start the backend (step 5), from the repository folder.
+3. Start the frontend: `cd frontend\cybergurad-dashboard`, then `npm run dev`.
+4. Open <http://localhost:5173>.
+
+Stop either server with `Ctrl + C`, and leave the environment with `deactivate`. Sysmon keeps running on its own, including after a restart. To stop it: `Stop-Service Sysmon64`, which pauses event collection until you start it again.
+
+</details>
+
+<details>
+<summary><b>9. Linux and macOS</b></summary>
+
+The backend and frontend can run on Linux or macOS with compatible Python and Node.js:
+
+```bash
+git clone https://github.com/Satyapt001/Evident.git
+cd Evident
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r backend/requirements.txt
+export PYTHONPATH="$PWD/backend:$PWD"
+python -m uvicorn app.main:app --app-dir ./backend --host 127.0.0.1 --port 8000 --reload
+```
+
+```bash
+# second terminal
+cd Evident/frontend/cybergurad-dashboard
+npm ci && npm run dev
+```
+
+The Sysmon live feed is **Windows-only**. Other systems would need a separate, supported telemetry collector and integration.
+
+</details>
+
+<details>
+<summary><b>10. Troubleshooting</b></summary>
+
+| Issue | Suggested fix |
+|---|---|
+| `python` not found | Install Python and enable PATH, reopen the terminal |
+| Activation blocked | `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` |
+| `requirements.txt` not found | Check `backend\` and the project root |
+| pip dependency conflict | Run `python -m pip check` and review the requirements file |
+| `npm` not found | Install Node.js LTS, reopen the terminal |
+| `npm ci` fails | Confirm `package-lock.json` exists; otherwise `npm install` |
+| Port 8000 in use | Stop the other process or configure another supported port |
+| Port 5173 in use | Use the alternate address Vite prints |
+| Sysmon service missing | Install Sysmon from an elevated terminal |
+| No Event ID 3 events | Enable `NetworkConnect` in the Sysmon configuration |
+| Events exist, dashboard empty | Call the telemetry endpoint directly and read backend logs |
+| Backend "access denied" | Check Windows event-log permissions for the account running it |
+| Network model unavailable | Check model artifact paths and the network health endpoint |
+| Frontend cannot reach backend | Check the API base URL and CORS configuration |
+
+</details>
+
+<details>
+<summary><b>11. Installation checklist</b></summary>
+
+- [ ] Repository cloned
+- [ ] Python 3.11 installed, virtual environment created and activated
+- [ ] Backend dependencies installed, `pip check` clean
+- [ ] Environment variables configured
+- [ ] Sysmon installed as Administrator, `NetworkConnect` enabled, Event ID 3 verified *(live telemetry only)*
+- [ ] Backend started, `/docs` loads
+- [ ] Telemetry endpoint returns events *(live telemetry only)*
+- [ ] Frontend dependencies installed and dev server running
+- [ ] Dashboard shows data returned by the backend
+
+</details>
 
 ---
 
-## API and Integration Status
+## API reference
 
-The backend is intended to expose analysis services through FastAPI. The exact routes and request schemas should be verified from the final OpenAPI documentation.
+Routes seen during development. **The OpenAPI page at `/docs` on your running backend is the source of truth**; these may change.
 
-Known development route patterns have included:
-
-| Purpose | Example route | Notes |
+| Purpose | Route | Notes |
 |---|---|---|
-| URL analysis | `POST /api/v1/analyze/url` | Verify authentication, request schema, and health route |
-| Network-flow analysis | `POST /api/v1/analyze/network` | Requires the expected flow feature schema |
-| Network model health | `GET /api/v1/analyze/network/health` | Previously used to report model readiness |
-| Network preset retrieval | `GET /api/v1/network/preset/normal` | Development preset; not a live traffic feed |
-| Sysmon telemetry | `GET /api/v1/telemetry/sysmon/events` | Observed telemetry is not automatically a model prediction |
+| URL analysis | `POST /api/v1/analyze/url` | Verify request schema and authentication |
+| Network-flow analysis | `POST /api/v1/analyze/network` | Needs the expected flow feature schema |
+| Network model health | `GET /api/v1/analyze/network/health` | Reports model readiness |
+| Network preset | `GET /api/v1/network/preset/normal` | Development preset, not a live feed |
+| Sysmon telemetry | `GET /api/v1/telemetry/sysmon/events` | Observations only, not model predictions |
 
-These routes describe the known development interface and may change. Use the running application's OpenAPI specification as the source of truth.
-
-### Live network detection
-
-Real-time network classification requires more than collecting operating-system connection events. The collector and flow extractor must produce compatible model features, and each flow must pass validation before inference.
-
-Partial or unsupported flow records must not be silently classified as benign. Where feature coverage is insufficient, the system should return an explicit unevaluated or unavailable status.
-
-### Response automation
-
-The long-term objective is to coordinate detection, risk assessment, explanation, alerting, and response suggestions. Automated blocking, quarantine, or account changes should only be enabled after authorization, safety controls, and audit logging are implemented and tested.
+Partial or unsupported flow records must not be silently classified as benign; where features are insufficient the system should report *unevaluated* or *unavailable*.
 
 ---
 
-## Project Structure
+## Project structure
 
-The following is a conceptual guide based on the development layout. It is not a complete file listing.
+Conceptual layout, not a full listing. Folder names are as committed.
 
 ```text
-CyberShield/
+Evident/
 ├── backend/
 │   └── app/
-│       ├── main.py
-│       ├── api/
-│       │   └── v1/
-│       ├── schemas/
-│       └── services/
+│       ├── main.py          # FastAPI entry point (app.main:app)
+│       ├── api/v1/          # route handlers
+│       ├── schemas/         # request and response models
+│       └── services/        # detection and analysis logic
 ├── frontend/
 │   └── cybergurad-dashboard/
-│       ├── src/
-│       │   ├── api/
-│       │   ├── components/
-│       │   ├── hooks/
-│       │   ├── pages/
-│       │   └── routes/
+│       ├── src/             # api, components, hooks, pages, routes
 │       └── package.json
-├── models/
-│   ├── behavior/
-│   └── future/
+├── models/                  # trained model artifacts
 ├── tools/
 ├── data/
 ├── .gitignore
 └── README.md
 ```
 
-The actual spelling and names of directories should be preserved from the published repository. Large datasets, private logs, secrets, and model artifacts should be excluded from Git where appropriate and distributed through documented, permission-compatible channels.
+Keep large datasets, private logs, secrets and model files out of Git unless their licences and repository size have been reviewed.
 
 ---
 
-## Team and Contributions
+## Datasets and models
 
-CyberShield is being developed collaboratively, with responsibilities across model development, backend and frontend integration, resource support, and presentation.
+Research and training references. Citing a dataset does not mean every sample is in this repository.
 
-| Contributor | Role and contribution |
-|---|---|
-| **Satyapriya Tripathy** | Team leader; development of URL analysis, NLP-based email content analysis, deepfake detection, network anomaly and technical-behavior detection; backend and frontend integration; dashboard development; ongoing work on live feeds and automation |
-| **Bimal Kumar Naik** | Resource support, including computer and internet access, project feedback, and testing observations |
-| **Rohit Kumar Prajapati** | Presentation preparation and communication of the project |
-| **Soumya Ranjan Mishra** | Malware triage model training |
-| **Abhay Das** | Account-takeover model training |
+| Dataset | Used for | Notes | Links |
+|---|---|---|---|
+| **PhiUSIIL Phishing URL** | Phishing URL classification | 235,795 instances, 54 features; CC BY 4.0. Original labels: `1` legitimate, `0` phishing, so confirm your preprocessing's mapping | [Dataset](https://archive.ics.uci.edu/dataset/967/phiusil-phishing-url-dataset) · [Paper](https://doi.org/10.1016/j.cose.2023.103545) |
+| **CIC-IDS2017** | Network intrusion detection | Benign traffic and multiple attacks; model uses a 67-feature schema. Flow extraction must match the trained feature order, definitions and units | [Dataset](https://www.unb.ca/cic/datasets/ids-2017.html) · [CICFlowMeter](https://github.com/ahlashkari/CICFlowMeter) |
+| **DF40** | Deepfake research reference | Upstream licence **CC BY-NC 4.0**; review before redistribution or commercial use | [Repo](https://github.com/YZY-stack/DF40) · [Paper](https://arxiv.org/abs/2406.13495) |
+| **CLIP ViT-B/16** | Image-analysis backbone | Using CLIP is not the same as using a DF40-trained checkpoint | [CLIP](https://github.com/openai/CLIP) · [Model card](https://github.com/openai/CLIP/blob/main/model-card.md) |
+| Malware, account takeover | Model training | Sources, licences and splits to be documented once verified | n/a |
 
-Contributions may evolve as development progresses. Before publishing, confirm that every contributor agrees with the wording and that the table accurately reflects the work performed.
+**Deepfake module, to document before release:** accepted formats and size limits, preprocessing (resize, face crop, normalisation), the exact CLIP checkpoint and any fine-tuning, how the real/fake output is produced, video handling, evaluation splits and metrics, CPU/GPU needs, endpoint and response schema, and failure handling. A generic pretrained CLIP model is not a validated deepfake detector by itself; treat results as supporting evidence, not proof.
 
 ---
 
-## Limitations and Responsible Use
+## Limitations and responsible use
 
-CyberShield is an evolving project and should not be treated as a complete enterprise security product without further testing.
-
-- Model predictions may contain false positives and false negatives.
-- Risk scores should not be presented as calibrated probabilities unless calibration has been measured.
-- A benign prediction does not guarantee that an input is safe.
-- Missing threat-intelligence results do not prove that a URL or domain is legitimate.
+- Predictions can be wrong: expect false positives and false negatives. A benign result does not guarantee safety.
+- Risk scores are not calibrated probabilities unless calibration is measured.
+- No threat-intelligence match does not prove a URL or domain is legitimate.
 - Deepfake analysis cannot guarantee authenticity or manipulation.
 - Network detection depends on valid flow construction and feature compatibility.
-- Model outputs should be evaluated against held-out data and representative test conditions.
-- Malware analysis should be performed in an appropriately isolated environment.
-- Response actions should require authorization, least privilege, and auditability.
-- Do not upload confidential emails, personal images, credentials, or sensitive network records to untrusted environments.
-
-Use the platform only on systems, data, and networks for which you have authorization.
+- Malware analysis belongs in an isolated environment; triage supports investigation and does not replace sandboxing, endpoint protection or forensics.
+- Do not upload confidential emails, personal images, credentials or sensitive network records to untrusted environments.
+- Use CyberShield only on systems, data and networks you are authorised to test.
+- Use benign test inputs in an isolated environment; some requests create incident records.
 
 ---
 
-## Future Work
+## Roadmap
 
-Planned improvements include:
+- [ ] Live network monitoring: validated packet capture, bidirectional flow construction, model-compatible feature extraction
+- [ ] Agentic orchestration across detection, risk, explanation, alerting and recommendations
+- [ ] Human-approved response actions (block, quarantine, escalate, protect accounts) behind policy checks and audit logs
+- [ ] Unified incident management with consistent identifiers
+- [ ] Documented score semantics and clearer evidence summaries
+- [ ] Reproducible evaluation: splits, confusion matrices, precision, recall, F1, calibration, robustness
+- [ ] Deepfake evaluation across manipulation methods and image qualities
+- [ ] Safer malware file handling and richer indicators
+- [ ] Account-takeover data, validation and backend integration
+- [ ] Hardening: authentication, authorisation, secure configuration, rate limiting, containers
+- [ ] API reference, automated tests and deployment guides
+- [ ] Startup scripts (`setup.ps1`, `start-backend.ps1`, `start-frontend.ps1`, `check-sysmon.ps1`, `start-cybershield.ps1`) that check prerequisites and Sysmon, then start both servers. They should never silently install Sysmon or change Windows permissions.
 
-1. **Live network monitoring:** Validated packet capture, bidirectional flow construction, and feature extraction compatible with the network model.
-2. **Agentic orchestration:** Coordinating detection, classification, risk assessment, explanation, alerting, and recommendations through a controlled workflow.
-3. **Human-approved response actions:** Policy-gated integrations for approved blocking, quarantine, escalation, and account-protection operations.
-4. **Unified incident management:** Correlation of findings from different detection modules with consistent identifiers and audit trails.
-5. **Improved explainability:** Clear evidence summaries and documented score semantics.
-6. **Model evaluation:** Reproducible test splits, confusion matrices, precision, recall, F1-score, calibration checks, and robustness testing.
-7. **Deepfake evaluation:** Testing across different manipulation methods, image qualities, and supported media types.
-8. **Malware triage improvements:** Safer file handling, additional indicators, and reproducible evaluation.
-9. **Account-takeover integration:** Documented data sources, model validation, and backend integration.
-10. **Deployment hardening:** Authentication, authorization, secure configuration, logging, rate limiting, and containerized deployment.
-11. **Documentation and testing:** API reference, installation validation, automated tests, and deployment guides.
+These are goals, not commitments that the capabilities exist today.
 
-These are development goals, not commitments that the capabilities are already available.
+---
+
+## Team
+
+| Contributor | Role | Contribution |
+|---|---|---|
+| **Satyapriya Tripathy** | Team Lead | URL analysis, NLP-based content analysis, deepfake detection, network anomaly and technical-behaviour detection; backend and frontend integration; dashboard; ongoing live-feed, automation and backend integration |
+| **Bimal Kumar Naik** | Resource and project support | PC and internet resources; feedback after analysis and project reviews |
+| **Rohit Kumar Prajapati** | Presentation | Presentation preparation and communicating the project |
+| **Soumya Ranjan Mishra** | Malware triage | Malware triage model training |
+| **Abhay Das** | Account takeover | Account-takeover model training |
 
 ---
 
 ## Contributing
 
-Contributions, testing feedback, and suggestions are welcome once the repository is published.
+Contributions and testing feedback are welcome. A useful issue or pull request:
 
-A useful contribution should:
-
-1. Describe the issue or proposed improvement.
-2. Identify the affected module.
-3. Include reproducible steps where possible.
-4. Add or update tests for behavior changes.
-5. Document new dependencies, configuration, and data requirements.
-6. Avoid including secrets, private data, or datasets without redistribution permission.
-
-Please do not commit downloaded datasets or model weights until their licenses and repository size implications have been reviewed.
-
----
-
-## Acknowledgements and Citations
-
-CyberShield builds on publicly available research resources. Please consult the original project documentation and licenses before redistributing or using any third-party data, code, or model weights.
-
-**PhiUSIIL Phishing URL Dataset**
-
-Prasad, A., & Chandra, S. (2024). *PhiUSIIL Phishing URL (Website) Dataset*. UCI Machine Learning Repository. [https://doi.org/10.1016/j.cose.2023.103545](https://doi.org/10.1016/j.cose.2023.103545)
-
-**CIC-IDS2017**
-
-Sharafaldin, I., Lashkari, A. H., & Ghorbani, A. A. (2018). *Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization*. Proceedings of the International Conference on Information Systems Security and Privacy. Refer to the [official CIC-IDS2017 page](https://www.unb.ca/cic/datasets/ids-2017.html) for the dataset and publication details.
-
-**DF40**
-
-Yan, Z., et al. (2024). *DF40: Toward Next-Generation Deepfake Detection*. [arXiv:2406.13495](https://arxiv.org/abs/2406.13495). Refer to the [official DF40 repository](https://github.com/YZY-stack/DF40) for citation and license instructions.
-
-**CLIP**
-
-Radford, A., et al. (2021). *Learning Transferable Visual Models From Natural Language Supervision*. [OpenAI CLIP repository](https://github.com/openai/CLIP).
-
-Please cite additional datasets, model implementations, and libraries as required by their maintainers.
+1. Describes the problem or improvement and names the affected module.
+2. Gives reproducible steps.
+3. Adds or updates tests for behaviour changes.
+4. Documents new dependencies, configuration and data needs.
+5. Contains no secrets, private data, or datasets without redistribution permission.
 
 ---
 
 ## License
 
-The license for the CyberShield source code has not yet been specified.
+No licence has been specified yet, so by default all rights are reserved. Add a root `LICENSE` file before inviting reuse. Third-party datasets, checkpoints and dependencies keep their own licences (note DF40's CC BY-NC 4.0).
 
-Before publishing, choose and add a root-level `LICENSE` file. Do not imply that third-party datasets, checkpoints, or dependencies share the CyberShield code license.
+## Acknowledgements and citations
 
-Third-party assets remain subject to their original licenses. In particular, review the DF40 **CC BY-NC 4.0** terms before any commercial use or redistribution.
+- Prasad, A., & Chandra, S. (2024). *PhiUSIIL Phishing URL (Website) Dataset*. UCI Machine Learning Repository. https://doi.org/10.1016/j.cose.2023.103545
+- Sharafaldin, I., Lashkari, A. H., & Ghorbani, A. A. (2018). *Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization*. ICISSP. See the [CIC-IDS2017 page](https://www.unb.ca/cic/datasets/ids-2017.html).
+- Yan, Z., et al. (2024). *DF40: Toward Next-Generation Deepfake Detection*. [arXiv:2406.13495](https://arxiv.org/abs/2406.13495).
+- Radford, A., et al. (2021). *Learning Transferable Visual Models From Natural Language Supervision*. [OpenAI CLIP](https://github.com/openai/CLIP).
 
----
+Official references: [Python venv](https://docs.python.org/3/library/venv.html) · [Node.js](https://nodejs.org/) · [npm](https://docs.npmjs.com/) · [Git](https://git-scm.com/downloads) · [Sysmon](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon) · [FastAPI](https://fastapi.tiangolo.com/) · [Uvicorn](https://www.uvicorn.org/)
 
-## Project Status
+<div align="center">
 
-CyberShield is an active development project focused on bringing multiple AI-assisted security detection capabilities into one analyst-oriented workflow.
+**Detect. Understand. Prioritise. Respond responsibly.**
 
-The long-term vision is to help security teams move from isolated detections toward a structured, explainable, and controlled response process.
-
-**Detect. Understand. Prioritize. Respond responsibly.**
+</div>
