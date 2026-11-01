@@ -11,7 +11,7 @@ addEventListener('keydown', e => e.key === 'Escape' && setMenu(false));
 
 // Reveal on scroll
 $$('.cards .card').forEach((c, i) => c.style.setProperty('--i', i));
-const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: .12 });
+const rio = !('IntersectionObserver' in window) ? { observe: el => el.classList.add('in'), unobserve() {} } : new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: 0, rootMargin: '0px 0px -5% 0px' });
 $$('.reveal').forEach(el => rio.observe(el));
 
 // Card details
@@ -50,7 +50,7 @@ $$('.code').forEach(w => {
 // Hero 3D network
 const scene = $('#scene');
 let net = null;
-try { const { initNetwork } = await import('./js/network-scene.js?v=4'); net = await initNetwork($('#net'), scene, { reduceMotion: reduce }); }
+try { const { initNetwork } = await import('./js/network-scene.js?v=5'); net = await initNetwork($('#net'), scene, { reduceMotion: reduce }); }
 catch (err) { console.warn('3D network unavailable, using fallback.', err); }
 if (!net) scene.classList.add('no-webgl');
 addEventListener('pagehide', () => net && net.destroy());
