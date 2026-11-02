@@ -1,0 +1,14 @@
+{
+  "model_name": "EVIDENT Network Threat Detector",
+  "dataset": "CIC-IDS2017",
+  "random_state": 42,
+  "preprocessing": [
+    "numeric coercion",
+    "inf->NaN",
+    "median imputation",
+    "StandardScaler"
+  ],
+  "binary_algorithm": "HistGradientBoostingClassifier",
+  "family_algorithm": "HistGradientBoostingClassifier",
+  "feature_count": 67
+}

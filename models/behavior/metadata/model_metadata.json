@@ -1,0 +1,18 @@
+{
+  "model_name": "EVIDENT Network Threat Detector",
+  "model_version": "1.0.0",
+  "model_type": "supervised_network_intrusion_detection",
+  "dataset": "CIC-IDS2017",
+  "feature_count": 67,
+  "targets": [
+    "is_attack",
+    "attack_family"
+  ],
+  "production_artifact": "models/behavior/production/network_threat_model.pkl",
+  "metadata_generated_utc": "2026-10-06T15:39:57.881887+00:00",
+  "evaluation_summary": {
+    "binary_f1": 0.9989587589461059,
+    "binary_recall": 0.9992616812572513,
+    "attack_family_accuracy": 0.9961501951270963
+  }
+}

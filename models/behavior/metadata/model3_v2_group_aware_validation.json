@@ -1,0 +1,73 @@
+{
+  "aggregate": {
+    "average_binary_f1": 0.08355422595531349,
+    "minimum_binary_f1": 0.0,
+    "average_known_family_macro_f1": 0.16383977846427147,
+    "minimum_known_family_macro_f1": 0.16383977846427147,
+    "mean_false_positive_rate": 0.0008267537985899839,
+    "known_family_labels": [
+      "BRUTE_FORCE",
+      "DOS_DDOS",
+      "HEARTBLEED",
+      "WEB_ATTACK"
+    ],
+    "holdout_groups": [
+      "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+      "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+      "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+      "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv"
+    ]
+  },
+  "per_file": [
+    {
+      "file": "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+      "rows": 288602,
+      "binary_f1": 0.0,
+      "false_positive_rate": 0.0010361581059445673,
+      "known_family_macro_f1": NaN,
+      "attack_families": [
+        "INFILTRATION"
+      ],
+      "unseen_attack_families": [
+        "INFILTRATION"
+      ]
+    },
+    {
+      "file": "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+      "rows": 191033,
+      "binary_f1": 0.0,
+      "false_positive_rate": 0.000782791285628904,
+      "known_family_macro_f1": NaN,
+      "attack_families": [
+        "BOTNET"
+      ],
+      "unseen_attack_families": [
+        "BOTNET"
+      ]
+    },
+    {
+      "file": "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+      "rows": 286467,
+      "binary_f1": 0.006655010997687665,
+      "false_positive_rate": 0.0009252217003693046,
+      "known_family_macro_f1": NaN,
+      "attack_families": [
+        "PORT_SCAN"
+      ],
+      "unseen_attack_families": [
+        "PORT_SCAN"
+      ]
+    },
+    {
+      "file": "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+      "rows": 225745,
+      "binary_f1": 0.3275618928235663,
+      "false_positive_rate": 0.0005628441024171596,
+      "known_family_macro_f1": 0.16383977846427147,
+      "attack_families": [
+        "DOS_DDOS"
+      ],
+      "unseen_attack_families": []
+    }
+  ]
+}

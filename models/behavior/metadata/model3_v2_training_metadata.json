@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0-group-aware",
+  "dataset": "CIC-IDS2017",
+  "artifact": "C:\\Users\\bimal\\OneDrive\\Desktop\\EVIDENT\\models\\behavior\\experiments\\network_threat_model_v2_group_aware.pkl",
+  "training_rows": 400000,
+  "training_groups": [
+    "Monday-WorkingHours.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    "Tuesday-WorkingHours.pcap_ISCX.csv",
+    "Wednesday-workingHours.pcap_ISCX.csv"
+  ],
+  "holdout_groups": [
+    "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+    "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+    "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv"
+  ],
+  "feature_count": 78,
+  "known_families": [
+    "BRUTE_FORCE",
+    "DOS_DDOS",
+    "HEARTBLEED",
+    "WEB_ATTACK"
+  ],
+  "binary_threshold": 0.5,
+  "model_type": "HistGradientBoostingClassifier",
+  "selection": "higher_capacity architecture with balanced sample weights",
+  "random_state": 42,
+  "sampling_per_training_file_max": 100000,
+  "status": "EXPERIMENTAL_CANDIDATE",
+  "production_promoted": false
+}

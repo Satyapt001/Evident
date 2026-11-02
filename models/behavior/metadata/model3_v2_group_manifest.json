@@ -1,0 +1,222 @@
+{
+  "dataset": "CIC-IDS2017",
+  "files": [
+    "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+    "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+    "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "Monday-WorkingHours.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    "Tuesday-WorkingHours.pcap_ISCX.csv",
+    "Wednesday-workingHours.pcap_ISCX.csv"
+  ],
+  "audit": [
+    {
+      "file": "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+      "rows": 225745,
+      "benign_rows": 97718,
+      "attack_rows": 128027,
+      "attack_ratio": 0.5671310549513832,
+      "original_labels": [
+        "BENIGN",
+        "DDoS"
+      ],
+      "label_counts": {
+        "DDoS": 128027,
+        "BENIGN": 97718
+      }
+    },
+    {
+      "file": "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+      "rows": 286467,
+      "benign_rows": 127537,
+      "attack_rows": 158930,
+      "attack_ratio": 0.5547933967961406,
+      "original_labels": [
+        "BENIGN",
+        "PortScan"
+      ],
+      "label_counts": {
+        "PortScan": 158930,
+        "BENIGN": 127537
+      }
+    },
+    {
+      "file": "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+      "rows": 191033,
+      "benign_rows": 189067,
+      "attack_rows": 1966,
+      "attack_ratio": 0.010291415619290908,
+      "original_labels": [
+        "BENIGN",
+        "Bot"
+      ],
+      "label_counts": {
+        "BENIGN": 189067,
+        "Bot": 1966
+      }
+    },
+    {
+      "file": "Monday-WorkingHours.pcap_ISCX.csv",
+      "rows": 529918,
+      "benign_rows": 529918,
+      "attack_rows": 0,
+      "attack_ratio": 0.0,
+      "original_labels": [
+        "BENIGN"
+      ],
+      "label_counts": {
+        "BENIGN": 529918
+      }
+    },
+    {
+      "file": "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+      "rows": 288602,
+      "benign_rows": 288566,
+      "attack_rows": 36,
+      "attack_ratio": 0.00012473926029618645,
+      "original_labels": [
+        "BENIGN",
+        "Infiltration"
+      ],
+      "label_counts": {
+        "BENIGN": 288566,
+        "Infiltration": 36
+      }
+    },
+    {
+      "file": "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+      "rows": 170366,
+      "benign_rows": 168186,
+      "attack_rows": 2180,
+      "attack_ratio": 0.01279598041862813,
+      "original_labels": [
+        "BENIGN",
+        "Web Attack \ufffd Brute Force",
+        "Web Attack \ufffd Sql Injection",
+        "Web Attack \ufffd XSS"
+      ],
+      "label_counts": {
+        "BENIGN": 168186,
+        "Web Attack \ufffd Brute Force": 1507,
+        "Web Attack \ufffd XSS": 652,
+        "Web Attack \ufffd Sql Injection": 21
+      }
+    },
+    {
+      "file": "Tuesday-WorkingHours.pcap_ISCX.csv",
+      "rows": 445909,
+      "benign_rows": 432074,
+      "attack_rows": 13835,
+      "attack_ratio": 0.031026509893274188,
+      "original_labels": [
+        "BENIGN",
+        "FTP-Patator",
+        "SSH-Patator"
+      ],
+      "label_counts": {
+        "BENIGN": 432074,
+        "FTP-Patator": 7938,
+        "SSH-Patator": 5897
+      }
+    },
+    {
+      "file": "Wednesday-workingHours.pcap_ISCX.csv",
+      "rows": 692703,
+      "benign_rows": 440031,
+      "attack_rows": 252672,
+      "attack_ratio": 0.36476238734349353,
+      "original_labels": [
+        "BENIGN",
+        "DoS GoldenEye",
+        "DoS Hulk",
+        "DoS Slowhttptest",
+        "DoS slowloris",
+        "Heartbleed"
+      ],
+      "label_counts": {
+        "BENIGN": 440031,
+        "DoS Hulk": 231073,
+        "DoS GoldenEye": 10293,
+        "DoS slowloris": 5796,
+        "DoS Slowhttptest": 5499,
+        "Heartbleed": 11
+      }
+    }
+  ],
+  "integrity": [
+    {
+      "file": "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+      "rows": 225745,
+      "columns": 79,
+      "numeric_columns": 78,
+      "missing_cells": 4,
+      "infinite_cells": 64,
+      "exact_duplicate_rows": 2633
+    },
+    {
+      "file": "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+      "rows": 286467,
+      "columns": 79,
+      "numeric_columns": 78,
+      "missing_cells": 15,
+      "infinite_cells": 727,
+      "exact_duplicate_rows": 72353
+    },
+    {
+      "file": "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+      "rows": 191033,
+      "columns": 79,
+      "numeric_columns": 78,
+      "missing_cells": 28,
+      "infinite_cells": 216,
+      "exact_duplicate_rows": 6888
+    },
+    {
+      "file": "Monday-WorkingHours.pcap_ISCX.csv",
+      "rows": 529918,
+      "columns": 79,
+      "numeric_columns": 78,
+      "missing_cells": 64,
+      "infinite_cells": 810,
+      "exact_duplicate_rows": 26935
+    },
+    {
+      "file": "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+      "rows": 288602,
+      "columns": 79,
+      "numeric_columns": 78,
+      "missing_cells": 18,
+      "infinite_cells": 396,
+      "exact_duplicate_rows": 35630
+    },
+    {
+      "file": "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+      "rows": 170366,
+      "columns": 79,
+      "numeric_columns": 78,
+      "missing_cells": 20,
+      "infinite_cells": 250,
+      "exact_duplicate_rows": 6066
+    },
+    {
+      "file": "Tuesday-WorkingHours.pcap_ISCX.csv",
+      "rows": 445909,
+      "columns": 79,
+      "numeric_columns": 78,
+      "missing_cells": 201,
+      "infinite_cells": 327,
+      "exact_duplicate_rows": 24065
+    },
+    {
+      "file": "Wednesday-workingHours.pcap_ISCX.csv",
+      "rows": 692703,
+      "columns": 79,
+      "numeric_columns": 78,
+      "missing_cells": 1008,
+      "infinite_cells": 1586,
+      "exact_duplicate_rows": 81909
+    }
+  ],
+  "note": "Source file is the validation group. Do not mix rows from a holdout file into training."
+}

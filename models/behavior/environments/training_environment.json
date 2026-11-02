@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-10-06T15:39:57.879884+00:00",
+  "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "python_executable": "c:\\Users\\bimal\\OneDrive\\Desktop\\EVIDENT\\.venv\\Scripts\\python.exe",
+  "pandas_version": "2.2.3",
+  "numpy_version": "2.4.6",
+  "scikit_learn_version": "1.9.1",
+  "joblib_version": "1.6.0",
+  "dataset": "CIC-IDS2017"
+}

@@ -1,0 +1,116 @@
+{
+  "validation_type": "leave-one-file-group-out",
+  "holdout_file": "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+  "training_files": [
+    "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+    "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "Monday-WorkingHours.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    "Tuesday-WorkingHours.pcap_ISCX.csv",
+    "Wednesday-workingHours.pcap_ISCX.csv"
+  ],
+  "training_rows": 489616,
+  "holdout_rows": 100000,
+  "binary": {
+    "accuracy": 0.82465,
+    "precision": 0.9844220955564177,
+    "recall": 0.65974,
+    "f1": 0.7900226322911303,
+    "confusion_matrix": [
+      [
+        49478,
+        522
+      ],
+      [
+        17013,
+        32987
+      ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 0.7441307846174671,
+        "recall": 0.98956,
+        "f1-score": 0.8494733498725223,
+        "support": 50000.0
+      },
+      "1": {
+        "precision": 0.9844220955564177,
+        "recall": 0.65974,
+        "f1-score": 0.7900226322911303,
+        "support": 50000.0
+      },
+      "accuracy": 0.82465,
+      "macro avg": {
+        "precision": 0.8642764400869424,
+        "recall": 0.82465,
+        "f1-score": 0.8197479910818264,
+        "support": 100000.0
+      },
+      "weighted avg": {
+        "precision": 0.8642764400869423,
+        "recall": 0.82465,
+        "f1-score": 0.8197479910818263,
+        "support": 100000.0
+      }
+    }
+  },
+  "attack_family": {
+    "macro_f1": 0.3312132678528299,
+    "weighted_f1": 0.9936398035584897,
+    "accuracy": 0.98736,
+    "labels": [
+      "DOS_DDOS"
+    ],
+    "classification_report": {
+      "BOTNET": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "DOS_DDOS": {
+        "precision": 1.0,
+        "recall": 0.98736,
+        "f1-score": 0.9936398035584897,
+        "support": 50000.0
+      },
+      "INFILTRATION": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "accuracy": 0.98736,
+      "macro avg": {
+        "precision": 0.3333333333333333,
+        "recall": 0.32912,
+        "f1-score": 0.3312132678528299,
+        "support": 50000.0
+      },
+      "weighted avg": {
+        "precision": 1.0,
+        "recall": 0.98736,
+        "f1-score": 0.9936398035584897,
+        "support": 50000.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        49368
+      ]
+    ]
+  },
+  "latency": {
+    "average_binary_prediction_ms": 0.005672199000255205
+  },
+  "coverage": {
+    "holdout_original_labels": [
+      "BENIGN",
+      "DDOS"
+    ],
+    "holdout_attack_families": [
+      "DOS_DDOS"
+    ]
+  }
+}

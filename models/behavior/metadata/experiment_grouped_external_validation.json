@@ -1,0 +1,447 @@
+{
+  "validation_type": "grouped_external_validation_of_experiment_artifact",
+  "artifact": "c:\\Users\\bimal\\OneDrive\\Desktop\\EVIDENT\\models\\behavior\\experiments\\network_threat_model_experiment.pkl",
+  "artifact_config": {
+    "name": "higher_capacity",
+    "max_iter": 350,
+    "learning_rate": 0.06,
+    "max_leaf_nodes": 63,
+    "l2": 1.0
+  },
+  "holdout_count": 8,
+  "aggregate": {
+    "average_binary_f1": 0.7403055333061107,
+    "average_family_macro_f1": 0.5646509317634137,
+    "minimum_binary_f1": 0.0,
+    "minimum_family_macro_f1": 0.24999249977499324
+  },
+  "holdouts": [
+    {
+      "file": "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+      "rows": 100000,
+      "original_labels": [
+        "BENIGN",
+        "DDOS"
+      ],
+      "attack_families": [
+        "DOS_DDOS"
+      ],
+      "binary_f1": 0.9978744848369939,
+      "family_macro_f1": 1.0,
+      "family_accuracy": 1.0,
+      "binary_latency_ms_per_row": 0.004968804999953136,
+      "binary_confusion_matrix": [
+        [
+          49788,
+          212
+        ],
+        [
+          1,
+          49999
+        ]
+      ],
+      "family_classification_report": {
+        "DOS_DDOS": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 50000.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 50000.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 50000.0
+        }
+      }
+    },
+    {
+      "file": "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+      "rows": 100000,
+      "original_labels": [
+        "BENIGN",
+        "PORTSCAN"
+      ],
+      "attack_families": [
+        "PORT_SCAN"
+      ],
+      "binary_f1": 0.9940751933514921,
+      "family_macro_f1": 0.24999249977499324,
+      "family_accuracy": 0.99994,
+      "binary_latency_ms_per_row": 0.004579972999636084,
+      "binary_confusion_matrix": [
+        [
+          49405,
+          595
+        ],
+        [
+          1,
+          49999
+        ]
+      ],
+      "family_classification_report": {
+        "BRUTE_FORCE": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "DOS_DDOS": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "PORT_SCAN": {
+          "precision": 1.0,
+          "recall": 0.99994,
+          "f1-score": 0.999969999099973,
+          "support": 50000.0
+        },
+        "WEB_ATTACK": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "accuracy": 0.99994,
+        "macro avg": {
+          "precision": 0.25,
+          "recall": 0.249985,
+          "f1-score": 0.24999249977499324,
+          "support": 50000.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 0.99994,
+          "f1-score": 0.999969999099973,
+          "support": 50000.0
+        }
+      }
+    },
+    {
+      "file": "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+      "rows": 51966,
+      "original_labels": [
+        "BENIGN",
+        "BOT"
+      ],
+      "attack_families": [
+        "BOTNET"
+      ],
+      "binary_f1": 0.9219047619047619,
+      "family_macro_f1": 0.49987280590180616,
+      "family_accuracy": 0.9994913530010173,
+      "binary_latency_ms_per_row": 0.004370311357770781,
+      "binary_confusion_matrix": [
+        [
+          49702,
+          298
+        ],
+        [
+          30,
+          1936
+        ]
+      ],
+      "family_classification_report": {
+        "BOTNET": {
+          "precision": 1.0,
+          "recall": 0.9994913530010173,
+          "f1-score": 0.9997456118036123,
+          "support": 1966.0
+        },
+        "DOS_DDOS": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "accuracy": 0.9994913530010173,
+        "macro avg": {
+          "precision": 0.5,
+          "recall": 0.49974567650050866,
+          "f1-score": 0.49987280590180616,
+          "support": 1966.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 0.9994913530010173,
+          "f1-score": 0.9997456118036123,
+          "support": 1966.0
+        }
+      }
+    },
+    {
+      "file": "Monday-WorkingHours.pcap_ISCX.csv",
+      "rows": 50000,
+      "original_labels": [
+        "BENIGN"
+      ],
+      "attack_families": [],
+      "binary_f1": 0.0,
+      "family_macro_f1": null,
+      "family_accuracy": null,
+      "binary_latency_ms_per_row": 0.003987620000261813,
+      "binary_confusion_matrix": [
+        [
+          49239,
+          761
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "family_classification_report": null
+    },
+    {
+      "file": "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+      "rows": 50036,
+      "original_labels": [
+        "BENIGN",
+        "INFILTRATION"
+      ],
+      "attack_families": [
+        "INFILTRATION"
+      ],
+      "binary_f1": 0.14347826086956522,
+      "family_macro_f1": 0.3238095238095238,
+      "family_accuracy": 0.9444444444444444,
+      "binary_latency_ms_per_row": 0.0039008813657141874,
+      "binary_confusion_matrix": [
+        [
+          49609,
+          391
+        ],
+        [
+          3,
+          33
+        ]
+      ],
+      "family_classification_report": {
+        "BOTNET": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "DOS_DDOS": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "INFILTRATION": {
+          "precision": 1.0,
+          "recall": 0.9444444444444444,
+          "f1-score": 0.9714285714285714,
+          "support": 36.0
+        },
+        "accuracy": 0.9444444444444444,
+        "macro avg": {
+          "precision": 0.3333333333333333,
+          "recall": 0.3148148148148148,
+          "f1-score": 0.3238095238095238,
+          "support": 36.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 0.9444444444444444,
+          "f1-score": 0.9714285714285713,
+          "support": 36.0
+        }
+      }
+    },
+    {
+      "file": "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+      "rows": 52180,
+      "original_labels": [
+        "BENIGN",
+        "WEB_ATTACK_\ufffd_BRUTE_FORCE",
+        "WEB_ATTACK_\ufffd_SQL_INJECTION",
+        "WEB_ATTACK_\ufffd_XSS"
+      ],
+      "attack_families": [
+        "BRUTE_FORCE",
+        "WEB_ATTACK"
+      ],
+      "binary_f1": 0.9010578718108276,
+      "family_macro_f1": 0.3788939161740738,
+      "family_accuracy": 0.8096330275229358,
+      "binary_latency_ms_per_row": 0.004083875047291771,
+      "binary_confusion_matrix": [
+        [
+          49531,
+          469
+        ],
+        [
+          8,
+          2172
+        ]
+      ],
+      "family_classification_report": {
+        "BRUTE_FORCE": {
+          "precision": 0.8246445497630331,
+          "recall": 0.9236894492368944,
+          "f1-score": 0.8713615023474178,
+          "support": 1507.0
+        },
+        "DOS_DDOS": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "PORT_SCAN": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "WEB_ATTACK": {
+          "precision": 0.7690721649484537,
+          "recall": 0.5542347696879644,
+          "f1-score": 0.6442141623488774,
+          "support": 673.0
+        },
+        "accuracy": 0.8096330275229358,
+        "macro avg": {
+          "precision": 0.3984291786778717,
+          "recall": 0.36948105473121473,
+          "f1-score": 0.3788939161740738,
+          "support": 2180.0
+        },
+        "weighted avg": {
+          "precision": 0.8074884878455048,
+          "recall": 0.8096330275229358,
+          "f1-score": 0.8012375758249326,
+          "support": 2180.0
+        }
+      }
+    },
+    {
+      "file": "Tuesday-WorkingHours.pcap_ISCX.csv",
+      "rows": 63835,
+      "original_labels": [
+        "BENIGN",
+        "FTP-PATATOR",
+        "SSH-PATATOR"
+      ],
+      "attack_families": [
+        "BRUTE_FORCE"
+      ],
+      "binary_f1": 0.9669999300845976,
+      "family_macro_f1": 1.0,
+      "family_accuracy": 1.0,
+      "binary_latency_ms_per_row": 0.004384578992750166,
+      "binary_confusion_matrix": [
+        [
+          49060,
+          940
+        ],
+        [
+          4,
+          13831
+        ]
+      ],
+      "family_classification_report": {
+        "BRUTE_FORCE": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 13835.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 13835.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 13835.0
+        }
+      }
+    },
+    {
+      "file": "Wednesday-workingHours.pcap_ISCX.csv",
+      "rows": 121599,
+      "original_labels": [
+        "BENIGN",
+        "DOS_GOLDENEYE",
+        "DOS_HULK",
+        "DOS_SLOWHTTPTEST",
+        "DOS_SLOWLORIS",
+        "HEARTBLEED"
+      ],
+      "attack_families": [
+        "DOS_DDOS",
+        "HEARTBLEED"
+      ],
+      "binary_f1": 0.9970537635906472,
+      "family_macro_f1": 0.4999877766834999,
+      "family_accuracy": 0.9999022332714144,
+      "binary_latency_ms_per_row": 0.004044513523701401,
+      "binary_confusion_matrix": [
+        [
+          49601,
+          399
+        ],
+        [
+          24,
+          71575
+        ]
+      ],
+      "family_classification_report": {
+        "BRUTE_FORCE": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "DOS_DDOS": {
+          "precision": 1.0,
+          "recall": 0.9999022182488685,
+          "f1-score": 0.9999511067339997,
+          "support": 71588.0
+        },
+        "HEARTBLEED": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 11.0
+        },
+        "WEB_ATTACK": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "accuracy": 0.9999022332714144,
+        "macro avg": {
+          "precision": 0.5,
+          "recall": 0.4999755545622171,
+          "f1-score": 0.4999877766834999,
+          "support": 71599.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 0.9999022332714144,
+          "f1-score": 0.9999511142456399,
+          "support": 71599.0
+        }
+      }
+    }
+  ],
+  "promotion_status": "REVIEW_REQUIRED"
+}

@@ -1,0 +1,8 @@
+{
+  "model_name": "EVIDENT Network Threat Detector",
+  "version": "1.0.0",
+  "status": "production",
+  "artifact": "network_threat_model.pkl",
+  "dataset": "CIC-IDS2017",
+  "created_at_utc": "2026-10-06T15:39:57.881887+00:00"
+}

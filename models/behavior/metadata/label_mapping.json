@@ -1,0 +1,16 @@
+{
+  "binary": {
+    "0": "BENIGN",
+    "1": "ATTACK"
+  },
+  "attack_family": {
+    "BRUTE_FORCE": "Brute-force / password guessing",
+    "DOS_DDOS": "Denial of Service / Distributed Denial of Service",
+    "PORT_SCAN": "Port scanning / reconnaissance",
+    "WEB_ATTACK": "Web application attack",
+    "BOTNET": "Botnet traffic",
+    "INFILTRATION": "Network infiltration",
+    "HEARTBLEED": "Heartbleed-style attack",
+    "OTHER_ATTACK": "Other attack family"
+  }
+}

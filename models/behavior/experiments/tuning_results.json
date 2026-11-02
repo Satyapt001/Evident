@@ -1,0 +1,26 @@
+[
+  {
+    "name":"higher_capacity",
+    "binary_f1":0.9989983658,
+    "family_macro_f1":0.8980551764,
+    "combined_score":0.95862109
+  },
+  {
+    "name":"conservative",
+    "binary_f1":0.999011454,
+    "family_macro_f1":0.8803914938,
+    "combined_score":0.9515634699
+  },
+  {
+    "name":"regularized",
+    "binary_f1":0.99901148,
+    "family_macro_f1":0.8777476881,
+    "combined_score":0.9505059633
+  },
+  {
+    "name":"baseline",
+    "binary_f1":0.9989587589,
+    "family_macro_f1":0.8775190208,
+    "combined_score":0.9503828637
+  }
+]
