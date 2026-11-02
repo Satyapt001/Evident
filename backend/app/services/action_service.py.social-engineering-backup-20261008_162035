@@ -1,0 +1,224 @@
+"""Admin action policy and safe prototype execution layer."""
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from typing import Any
+
+from app.services.incident_store import append_action, get_event_by_request_id, update_event
+
+
+def _action(action_id: str, name: str, description: str, category: str,
+            priority: str, approval: bool, reason: str, available: bool = True,
+            recommended: bool = False) -> dict[str, Any]:
+    return {
+        "action_id": action_id,
+        "name": name,
+        "description": description,
+        "category": category,
+        "priority": priority,
+        "requires_approval": approval,
+        "available": available,
+        "reason": reason,
+        "recommended": recommended,
+        "status": "PROPOSED",
+    }
+
+
+def available_actions(event: dict[str, Any]) -> list[dict[str, Any]]:
+    level = str(event.get("risk_level", "SAFE")).upper()
+    threat = str(event.get("threat_type", "UNKNOWN")).upper()
+    prediction = str(event.get("prediction", "")).upper()
+    metadata = event.get("metadata", {}) or {}
+    source = str(metadata.get("source", event.get("source", ""))).lower()
+    if not source and metadata.get("source_type"):
+        source = str(metadata.get("source_type")).lower()
+
+    is_email = source == "social_engineering_email" or bool(metadata.get("email_analysis"))
+    is_phishing = threat == "PHISHING"
+    is_attack = prediction == "ATTACK" or (
+        threat in {"PHISHING", "DEEPFAKE", "NETWORK"} and level not in {"SAFE", "LOW"}
+    )
+    actions: list[dict[str, Any]] = []
+
+    actions.append(_action(
+        "PRESERVE_EVIDENCE", "Preserve evidence",
+        "Freeze the detection context and retain indicators for investigation.",
+        "EVIDENCE", "HIGH" if level in {"HIGH", "CRITICAL"} else "MEDIUM", False,
+        "Recommended for every non-trivial detection.",
+        recommended=level in {"MEDIUM", "HIGH", "CRITICAL"},
+    ))
+
+    if is_email:
+        actions.append(_action(
+            "QUARANTINE_EMAIL", "Quarantine email",
+            "Place the suspicious email into a prototype quarantine state.",
+            "CONTAINMENT", "CRITICAL" if level == "CRITICAL" else "HIGH", True,
+            "Recommended by the email analysis when social-engineering risk is high.",
+            recommended=level in {"HIGH", "CRITICAL"},
+        ))
+        actions.append(_action(
+            "BLOCK_SENDER", "Block sender",
+            "Record the sender address as blocked in the prototype response layer.",
+            "CONTAINMENT", "HIGH", True,
+            "Use when sender impersonation or malicious delivery is confirmed.",
+            recommended=level in {"HIGH", "CRITICAL"},
+        ))
+        if metadata.get("urls"):
+            actions.append(_action(
+                "BLOCK_EXTRACTED_URLS", "Block extracted URLs",
+                "Record extracted URLs as containment targets after Model 1 review.",
+                "CONTAINMENT", "HIGH", True,
+                "Recommended when embedded URLs are high-risk or confirmed malicious.",
+                recommended=any(float(x.get("risk_score", 0)) >= 60 for x in metadata.get("url_results", [])),
+            ))
+        actions.append(_action(
+            "ESCALATE_INCIDENT", "Escalate to SOC",
+            "Raise the email event to the next analyst tier and mark it INVESTIGATING.",
+            "CASE", "HIGH", False,
+            "Recommended when social engineering requires human investigation.",
+            recommended=level in {"HIGH", "CRITICAL"},
+        ))
+        actions.append(_action(
+            "NOTIFY_SOC", "Notify SOC",
+            "Record a SOC notification request for the email incident.",
+            "NOTIFICATION", "HIGH" if level in {"HIGH", "CRITICAL"} else "MEDIUM", False,
+            "Recommended when the message may affect users or services.",
+            recommended=level in {"HIGH", "CRITICAL"},
+        ))
+
+    if is_phishing and not is_email:
+        actions.append(_action(
+            "BLOCK_URL", "Block exact URL",
+            "Add the detected URL to the prototype block list.",
+            "CONTAINMENT", "CRITICAL" if level == "CRITICAL" else "HIGH", True,
+            "Use when the URL is confirmed malicious or policy requires containment.",
+            recommended=level in {"HIGH", "CRITICAL"},
+        ))
+        actions.append(_action(
+            "BLOCK_DOMAIN", "Block domain",
+            "Add the URL hostname to the prototype domain block list.",
+            "CONTAINMENT", "CRITICAL" if level == "CRITICAL" else "HIGH", True,
+            "Broader containment; verify the domain before execution.",
+            recommended=level in {"HIGH", "CRITICAL"},
+        ))
+        if level in {"HIGH", "CRITICAL"}:
+            actions.append(_action(
+                "QUARANTINE_EVENT", "Quarantine incident",
+                "Move the incident to CONTAINED and mark it for investigation.",
+                "CONTAINMENT", "HIGH", True,
+                "Recommended for high-confidence phishing detections.",
+                recommended=True,
+            ))
+        actions.append(_action(
+            "ADD_WATCHLIST", "Add to watchlist",
+            "Track the URL/domain for subsequent detections.",
+            "MONITORING", "MEDIUM", False,
+            "Useful when blocking is not yet justified.",
+        ))
+
+    if is_attack and not is_email:
+        actions.append(_action(
+            "ESCALATE_INCIDENT", "Escalate to SOC",
+            "Raise the event to the next analyst tier and mark it INVESTIGATING.",
+            "CASE", "HIGH", False,
+            "Creates an analyst hand-off without performing infrastructure containment.",
+            recommended=level in {"HIGH", "CRITICAL"},
+        ))
+        actions.append(_action(
+            "NOTIFY_SOC", "Notify SOC",
+            "Record a SOC notification request for the incident.",
+            "NOTIFICATION", "HIGH" if level in {"HIGH", "CRITICAL"} else "MEDIUM", False,
+            "Recommended when a threat requires human review.",
+            recommended=level in {"HIGH", "CRITICAL"},
+        ))
+
+    if level in {"SAFE", "LOW"}:
+        safe_name = "Allow / mark safe" if not is_email else "Mark email reviewed"
+        safe_id = "ALLOW_URL" if not is_email else "MARK_EMAIL_REVIEWED"
+        actions.append(_action(
+            safe_id, safe_name,
+            "Record the detection as reviewed and safe for the current incident.",
+            "DISPOSITION", "LOW", True,
+            "Use after analyst review when no malicious activity is confirmed.",
+        ))
+        actions.append(_action(
+            "MARK_FALSE_POSITIVE", "Mark false positive",
+            "Close this event as a reviewed false positive.",
+            "DISPOSITION", "LOW", True,
+            "Only use after analyst review.",
+        ))
+
+    actions.append(_action(
+        "CLOSE_INCIDENT", "Close incident",
+        "Resolve the current event and retain the audit trail.",
+        "DISPOSITION", "MEDIUM", True,
+        "Use after investigation or containment is complete.",
+    ))
+    return actions
+
+
+def build_action_context(request_id: str) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    event = get_event_by_request_id(request_id)
+    if not event:
+        raise KeyError(f"No incident found for request_id={request_id}")
+    return event, available_actions(event)
+
+
+def execute_action(request_id: str, action_id: str, approved: bool, note: str, actor: str) -> dict[str, Any]:
+    event, actions = build_action_context(request_id)
+    selected = next((a for a in actions if a["action_id"] == action_id), None)
+    if selected is None:
+        raise KeyError(f"Action {action_id} is not available for this detection")
+    if not selected["available"]:
+        raise ValueError("This action is not currently available")
+    if selected["requires_approval"] and not approved:
+        return _execution(
+            request_id, event, selected, "APPROVAL_REQUIRED",
+            "Admin approval is required before this containment action can execute.",
+            actor, note,
+        )
+
+    now = datetime.now(timezone.utc).isoformat()
+    status = "EXECUTED"
+    message = "Prototype action recorded successfully. No external infrastructure was changed."
+    update: dict[str, Any] = {}
+
+    if action_id in {"QUARANTINE_EVENT", "QUARANTINE_EMAIL"}:
+        update["status"] = "CONTAINED"
+    elif action_id == "ESCALATE_INCIDENT":
+        update["status"] = "INVESTIGATING"
+    elif action_id in {"CLOSE_INCIDENT", "MARK_FALSE_POSITIVE", "ALLOW_URL", "MARK_EMAIL_REVIEWED"}:
+        update["status"] = "RESOLVED"
+        if action_id in {"ALLOW_URL", "MARK_EMAIL_REVIEWED"}:
+            update["disposition"] = "ALLOWED" if action_id == "ALLOW_URL" else "REVIEWED"
+    elif action_id in {"BLOCK_URL", "BLOCK_DOMAIN", "BLOCK_EXTRACTED_URLS", "BLOCK_SENDER"}:
+        update["containment"] = action_id
+    elif action_id == "PRESERVE_EVIDENCE":
+        update["evidence_preserved"] = True
+    elif action_id == "ADD_WATCHLIST":
+        update["watchlisted"] = True
+    elif action_id == "NOTIFY_SOC":
+        update["soc_notified"] = True
+
+    if update:
+        update_event(event["event_id"], update)
+
+    return _execution(request_id, event, selected, status, message, actor, note, now=now, metadata=update)
+
+
+def _execution(request_id: str, event: dict[str, Any], selected: dict[str, Any], status: str,
+               message: str, actor: str, note: str, now: str | None = None,
+               metadata: dict[str, Any] | None = None) -> dict[str, Any]:
+    payload = {
+        "action_id": selected["action_id"],
+        "name": selected["name"],
+        "status": status,
+        "message": message,
+        "actor": actor or "SOC Analyst",
+        "timestamp": now or datetime.now(timezone.utc).isoformat(),
+        "request_id": request_id,
+        "incident_id": event.get("event_id"),
+        "metadata": {"note": note, "recommended": bool(selected.get("recommended")), **(metadata or {})},
+    }
+    append_action(event["event_id"], payload)
+    return payload
