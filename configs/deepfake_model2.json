@@ -1,0 +1,6 @@
+{
+  "model_name": "DF40 CLIP ViT-B/16",
+  "class_mapping": {"0": "REAL", "1": "DEEPFAKE"},
+  "input": {"allowed_extensions": [".jpg", ".jpeg", ".png", ".webp"], "max_size_mb": 10},
+  "risk": {"model_weight": 0.8, "independent_evidence_weight": 0.2, "double_count_model_probability": false}
+}

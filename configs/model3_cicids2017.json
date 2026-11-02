@@ -1,0 +1,18 @@
+{
+  "model_id": "model_3",
+  "name": "Network / Technical Threat Detection",
+  "dataset": "CIC-IDS2017",
+  "algorithm": "RandomForestClassifier",
+  "binary_task": "BENIGN vs ATTACK",
+  "secondary_task": "broad attack category",
+  "raw_data_path": "data/raw/behaviour",
+  "artifact_path": "models/behavior/network_threat_model.pkl",
+  "api_endpoint": "POST /api/v1/analyze/network",
+  "risk_levels": [
+    "SAFE",
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "dataset": "CIC-IDS2017",
+  "raw_data_dir": "data/raw/behaviour",
+  "processed_dir": "data/processed/behavior",
+  "model_output_dir": "models/behavior/experiments",
+  "metadata_dir": "models/behavior/metadata",
+  "random_state": 42,
+  "group_column": "__source_group__",
+  "binary_target": "__binary_target__",
+  "family_target": "__family_target__",
+  "holdout_groups": [
+    "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+    "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+    "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv"
+  ],
+  "family_mapping": {
+    "BENIGN": "BENIGN",
+    "DDoS": "DOS_DDOS",
+    "DoS Hulk": "DOS_DDOS",
+    "DoS GoldenEye": "DOS_DDOS",
+    "DoS slowloris": "DOS_DDOS",
+    "DoS Slowhttptest": "DOS_DDOS",
+    "PortScan": "PORT_SCAN",
+    "FTP-Patator": "BRUTE_FORCE",
+    "SSH-Patator": "BRUTE_FORCE",
+    "Web Attack \u2013 Brute Force": "WEB_ATTACK",
+    "Web Attack \u2013 XSS": "WEB_ATTACK",
+    "Web Attack \u2013 Sql Injection": "WEB_ATTACK",
+    "Bot": "BOTNET",
+    "Infiltration": "INFILTRATION",
+    "Heartbleed": "HEARTBLEED"
+  }
+}

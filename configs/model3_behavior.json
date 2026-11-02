@@ -1,0 +1,15 @@
+{
+  "model_name": "CYBERGUARD Behavioral Detection Engine",
+  "type": "hybrid_rule_anomaly",
+  "scenarios": [
+    "BRUTE_FORCE",
+    "ACCOUNT_TAKEOVER",
+    "API_ABUSE",
+    "ABNORMAL_BEHAVIOR"
+  ],
+  "risk_weights": {
+    "rule_score": 0.6,
+    "anomaly_score": 0.4
+  },
+  "response_mode": "RECOMMENDATION_ONLY"
+}

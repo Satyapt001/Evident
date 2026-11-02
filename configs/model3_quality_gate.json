@@ -1,0 +1,5 @@
+{
+  "production_promotion": "disabled_until_grouped_external_validation_passes",
+  "production_artifact_protected": true,
+  "selection_metric": "0.6*binary_f1 + 0.4*family_macro_f1"
+}
