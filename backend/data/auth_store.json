@@ -1,0 +1,36 @@
+{
+  "secret": "tu67txjq9Fo1Kg6i7QrwMVn513OT61dHqBGNsI4B2mTfvfUpcky4rDLOY1q6WwAp",
+  "organization": {
+    "name": "EVIDENT_CyberShield",
+    "created_at": "2026-10-12T07:10:17.235909+00:00"
+  },
+  "users": [
+    {
+      "id": "3daf1366c98b446fae5af15de2898a04",
+      "name": "satyapriya Tripathy",
+      "email": "satyapt001@gmail.com",
+      "role": "admin",
+      "password_hash": "pbkdf2_sha256$240000$zWd2hbfQpifg5GemIIRiig$5-3NowgIHo6F0kUhjXNZs0FMVrCYutS0j_4NhMsa-8Y",
+      "created_at": "2026-10-12T07:10:17.235909+00:00",
+      "last_login": "2026-10-14T07:57:19.399673+00:00"
+    },
+    {
+      "id": "1d1d20cfc50748399a2bbb7b93a35770",
+      "name": "rohit kumar Paul",
+      "email": "prajapatirohit668@gmail.com",
+      "role": "analyst",
+      "password_hash": "pbkdf2_sha256$240000$0UfbgHUCgAgZJknZag3J_g$kpA1mENVx2y1ptn6WukMkjZ2kBlDbZtKJdI6gn6DqaA",
+      "created_at": "2026-10-12T07:34:07.864690+00:00",
+      "last_login": "2026-10-12T07:35:12.127558+00:00"
+    },
+    {
+      "id": "3d43165583764c71b5366c7c0c5dd9ab",
+      "name": "Bimal Ku Naik",
+      "email": "bimalkumarnaik678@gmail.com",
+      "role": "analyst",
+      "password_hash": "pbkdf2_sha256$240000$5XICUfc0-iWN3I1AkdHRAQ$FF-gGsIpGRmk6apv-Gl7sJ8RK6uBpHf7BPuo03RyZwM",
+      "created_at": "2026-10-13T04:45:00.811846+00:00",
+      "last_login": "2026-10-13T04:45:48.055250+00:00"
+    }
+  ]
+}
