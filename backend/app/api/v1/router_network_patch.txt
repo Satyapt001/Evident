@@ -1,0 +1,5 @@
+ADD THESE IMPORT/INCLUDE LINES TO backend/app/api/v1/router.py:
+
+from app.api.v1.network_operations import router as network_operations_router
+
+router.include_router(network_operations_router)
