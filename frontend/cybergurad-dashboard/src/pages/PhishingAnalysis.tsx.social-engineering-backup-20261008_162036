@@ -1,0 +1,26 @@
+import { useState } from 'react'
+import AnalysisResult from '@/components/common/AnalysisResult'
+import ErrorState from '@/components/common/ErrorState'
+import PageHeader from '@/components/common/PageHeader'
+import Panel from '@/components/common/Panel'
+import { analyzeUrl } from '@/api/analysis'
+
+export default function PhishingAnalysis() {
+  const [url, setUrl] = useState('https://example.com/')
+  const [result, setResult] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const submit = async () => {
+    setLoading(true); setError(null)
+    try { setResult(await analyzeUrl(url)) } catch (e) { setError(e instanceof Error ? e.message : 'Analysis failed.') }
+    finally { setLoading(false) }
+  }
+  return <>
+    <PageHeader title="PHISHING ANALYSIS" telemetry={['MODEL 1 / RANDOM FOREST', 'THREAT INTELLIGENCE ENABLED']} />
+    <Panel title="URL ANALYSIS">
+      <div className="analysis-form"><input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://suspicious.example" /><button onClick={submit} disabled={loading || !url.trim()}>{loading ? 'ANALYZING…' : 'ANALYZE URL'}</button></div>
+      {error && <ErrorState message={error} onRetry={submit} />}
+    </Panel>
+    {result && <AnalysisResult result={result} />}
+  </>
+}

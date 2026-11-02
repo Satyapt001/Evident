@@ -1,0 +1,6 @@
+.network-mode-switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px;padding:5px;border:1px solid var(--border);background:var(--panel);width:max-content;max-width:100%}
+.network-mode-switch button{min-height:36px;padding:8px 14px;border:1px solid transparent;background:transparent;color:var(--text-dim);font:10px var(--font-mono);letter-spacing:.08em}
+.network-mode-switch button:hover{color:var(--cyan);border-color:var(--border-strong)}.network-mode-switch button.is-active{background:var(--cyan-dim);border-color:var(--cyan);color:var(--cyan)}
+.analysis-help{margin:0 0 12px;padding:10px 12px;background:var(--panel-2);border-left:2px solid var(--cyan);color:var(--text-dim);font-size:11px;line-height:1.6}
+.network-flow-analysis__vectors{padding:0 0 12px!important;border-bottom:0!important}.network-flow-analysis__actions{display:flex;gap:9px;margin-top:12px}.network-flow-analysis__actions .network-ops__analyze{flex:1}.network-flow-analysis__actions>button:not(.network-ops__analyze){margin-top:0;min-width:84px}
+@media(max-width:650px){.network-flow-analysis__actions{flex-direction:column}.network-mode-switch{width:100%}.network-mode-switch button{flex:1}}

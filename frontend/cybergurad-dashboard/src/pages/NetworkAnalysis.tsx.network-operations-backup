@@ -1,0 +1,48 @@
+import { useState } from 'react'
+import AnalysisResult from '@/components/common/AnalysisResult'
+import ErrorState from '@/components/common/ErrorState'
+import PageHeader from '@/components/common/PageHeader'
+import Panel from '@/components/common/Panel'
+import { analyzeNetwork } from '@/api/analysis'
+
+const PRESETS = {
+  BENIGN: { Destination_Port: 80, Flow_Duration: 1000, Total_Fwd_Packets: 10, Total_Backward_Packets: 8, Total_Length_of_Fwd_Packets: 500, Total_Length_of_Bwd_Packets: 400 },
+  PORT_SCAN: { Destination_Port: 22, Flow_Duration: 120, Total_Fwd_Packets: 2, Total_Backward_Packets: 0, Total_Length_of_Fwd_Packets: 120, Total_Length_of_Bwd_Packets: 0, SYN_Flag_Count: 2, ACK_Flag_Count: 0 },
+  DOS_DDOS: { Destination_Port: 80, Flow_Duration: 500, Total_Fwd_Packets: 5000, Total_Backward_Packets: 1, Total_Length_of_Fwd_Packets: 500000, Total_Length_of_Bwd_Packets: 40 },
+  BRUTE_FORCE: { Destination_Port: 22, Flow_Duration: 3000, Total_Fwd_Packets: 150, Total_Backward_Packets: 20, Total_Length_of_Fwd_Packets: 12000, Total_Length_of_Bwd_Packets: 3000 },
+} as const
+
+export default function NetworkAnalysis() {
+  const [text, setText] = useState(JSON.stringify(PRESETS.BENIGN, null, 2))
+  const [result, setResult] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const loadPreset = (name: keyof typeof PRESETS) => { setText(JSON.stringify(PRESETS[name], null, 2)); setResult(null); setError(null) }
+  const submit = async () => {
+    setLoading(true); setError(null)
+    try { const flow = JSON.parse(text); setResult(await analyzeNetwork(flow)) }
+    catch (e) { setError(e instanceof Error ? e.message : 'Invalid JSON or analysis failed.') }
+    finally { setLoading(false) }
+  }
+  return <>
+    <PageHeader title="NETWORK / TECHNICAL" telemetry={['MODEL 3 / CIC-IDS2017', 'NETWORK-FLOW DETECTION']} />
+    <Panel title="NETWORK FLOW ANALYSIS">
+      <div className="analysis-form analysis-form--column">
+        <div className="analysis-help">Test the production Network Threat Detector with a CIC-IDS2017-style flow. Presets populate valid quick-test fields; the backend handles the remaining feature schema.</div>
+        <div className="analysis-actions">
+          <button type="button" onClick={() => loadPreset('BENIGN')}>BENIGN</button>
+          <button type="button" onClick={() => loadPreset('PORT_SCAN')}>PORT SCAN</button>
+          <button type="button" onClick={() => loadPreset('DOS_DDOS')}>DOS / DDOS</button>
+          <button type="button" onClick={() => loadPreset('BRUTE_FORCE')}>BRUTE FORCE</button>
+        </div>
+        <textarea value={text} onChange={e => setText(e.target.value)} spellCheck={false} aria-label="Network flow JSON" />
+        <div className="analysis-actions">
+          <button type="button" onClick={submit} disabled={loading}>{loading ? 'ANALYZING…' : 'ANALYZE FLOW'}</button>
+          <button type="button" onClick={() => { setText(''); setResult(null); setError(null) }}>CLEAR</button>
+        </div>
+      </div>
+      {error && <ErrorState message={error} onRetry={submit} />}
+    </Panel>
+    {result && <AnalysisResult result={result} />}
+  </>
+}
