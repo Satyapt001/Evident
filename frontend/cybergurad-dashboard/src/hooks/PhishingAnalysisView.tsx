@@ -1,0 +1,262 @@
+﻿import { useState } from "react";
+import type { ReactNode } from "react";
+import { AlertTriangle, ChevronDown, ChevronRight } from "lucide-react";
+import type { PhishingAnalysis, ThreatSource } from "../api/phishing";
+import type { PhishingState } from "../components/phishing/usePhishingAnalysis";
+import "./phishing.css";
+
+const RED = "#ef4444", ORANGE = "#f97316", YELLOW = "#eab308", GREEN = "#22c55e", GRAY = "#64748b", CYAN = "#22d3ee";
+
+const pct = (n: number) => `${n.toFixed(2)}%`;
+
+function riskColor(level: string): string {
+  switch (level.toUpperCase()) {
+    case "SAFE": return GREEN;
+    case "LOW": return CYAN;
+    case "MEDIUM": return YELLOW;
+    case "HIGH": return ORANGE;
+    case "CRITICAL": return RED;
+    default: return CYAN;
+  }
+}
+
+function sourceState(s: ThreatSource): { label: string; color: string } {
+  if (s.status === "ok") return s.found ? { label: "MATCH", color: RED } : { label: "CLEAR", color: GREEN };
+  if (s.status === "unavailable") return { label: "UNAVAILABLE", color: GRAY };
+  if (s.status === "error") return { label: "ERROR", color: ORANGE };
+  return { label: String(s.status).toUpperCase(), color: GRAY };
+}
+
+const FEATURE_GROUPS: { title: string; keys: string[] }[] = [
+  { title: "URL STRUCTURE", keys: ["URLLength", "DomainLength", "IsDomainIP", "URLSimilarityIndex", "NoOfSubDomain", "HasObfuscation", "ObfuscationRatio", "NoOfLettersInURL", "NoOfDegitsInURL", "NoOfEqualsInURL", "NoOfQMarkInURL", "NoOfAmpersandInURL", "NoOfOtherSpecialCharsInURL"] },
+  { title: "SECURITY", keys: ["IsHTTPS", "HasExternalFormSubmit", "HasPasswordField", "HasHiddenFields", "HasSubmitButton", "NoOfURLRedirect", "NoOfSelfRedirect"] },
+  { title: "PAGE ANALYSIS", keys: ["HasTitle", "DomainTitleMatchScore", "URLTitleMatchScore", "HasFavicon", "Robots", "IsResponsive", "HasDescription", "NoOfPopup", "NoOfiFrame"] },
+  { title: "CONTENT", keys: ["Bank", "Pay", "Crypto", "HasSocialNet", "HasCopyrightInfo"] },
+  { title: "RESOURCES", keys: ["NoOfImage", "NoOfCSS", "NoOfJS", "NoOfSelfRef", "NoOfEmptyRef", "NoOfExternalRef"] },
+];
+
+function fmtFeature(v: unknown): string {
+  if (typeof v === "number") return Number.isInteger(v) ? String(v) : String(Number(v.toFixed(4)));
+  if (v === null || v === undefined) return "â€”";
+  return String(v);
+}
+
+function Panel({ title, right, children, className = "" }: { title: string; right?: ReactNode; children: ReactNode; className?: string }) {
+  return (
+    <section className={`pa-panel ${className}`}>
+      <div className="pa-panel-h pa-mono"><span>{title}</span>{right && <span>{right}</span>}</div>
+      {children}
+    </section>
+  );
+}
+
+function MetricCard({ value, sub, label, color }: { value: string; sub?: string; label: string; color: string }) {
+  return (
+    <div className="pa-card" style={{ ["--c" as string]: color }}>
+      <div className="pa-card-v pa-mono">{value}</div>
+      {sub && <div className="pa-card-s pa-mono">{sub}</div>}
+      <div className="pa-card-l pa-mono">{label}</div>
+    </div>
+  );
+}
+
+function ThreatIntel({ d }: { d: PhishingAnalysis }) {
+  const [open, setOpen] = useState<Record<string, boolean>>({});
+  const ti = d.threat_intelligence;
+  return (
+    <Panel title="THREAT INTELLIGENCE" right={`${ti.positive_sources} / ${ti.sources_checked} POSITIVE MATCHES`}>
+      {ti.sources.map((s) => {
+        const st = sourceState(s);
+        const isOpen = !!open[s.source];
+        return (
+          <div key={s.source}>
+            <div className="pa-row">
+              <button className="pa-btn" onClick={() => setOpen((o) => ({ ...o, [s.source]: !o[s.source] }))} aria-expanded={isOpen}>
+                {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                <span>{s.source}</span>
+              </button>
+              <span className="pa-badge pa-mono" style={{ ["--c" as string]: st.color }}>{st.label}</span>
+            </div>
+            {isOpen && (
+              <div className="pa-detail pa-mono">
+                <div>status: {s.status}</div>
+                <div>found: {String(s.found)}</div>
+                {s.confidence && <div>confidence: {s.confidence}</div>}
+                {s.message && <div>{s.message}</div>}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </Panel>
+  );
+}
+
+function Response({ d }: { d: PhishingAnalysis }) {
+  const r = d.response;
+  const recOnly = r.mode === "RECOMMEND_ONLY";
+  const pb = r.playbook;
+  return (
+    <Panel title="RECOMMENDED RESPONSE" right={recOnly ? "RECOMMENDATION ONLY" : r.mode}>
+      {r.recommendations.length === 0 && <div className="pa-rec">No recommendations returned.</div>}
+      {r.recommendations.map((rec, i) => (
+        <div className="pa-rec" key={i}>
+          <span className="pa-badge pa-mono" style={{ ["--c" as string]: rec.priority === "HIGH" ? ORANGE : CYAN }}>{rec.priority}</span>{" "}
+          {rec.action}
+          <div className="pa-rec-r">{rec.reason}</div>
+        </div>
+      ))}
+      <dl className="pa-kv pa-mono" style={{ marginTop: 12 }}>
+        <dt>Disposition</dt><dd>{pb.id.replace(/_/g, " ")}</dd>
+        <dt>Playbook</dt><dd>{pb.name}</dd>
+      </dl>
+      {pb.objective && <div className="pa-detail" style={{ marginTop: 8 }}>{pb.objective}</div>}
+      {pb.steps.length > 0 && (
+        <ol className="pa-detail">
+          {pb.steps.map((s, i) => (
+            <li key={i}>{typeof s === "string" ? s : JSON.stringify(s)}</li>
+          ))}
+        </ol>
+      )}
+      {r.actions.length > 0 && (
+        <div style={{ marginTop: 8 }}>
+          {r.actions.map((a) => (
+            <div className="pa-row pa-mono" key={a.action_id}>
+              <span>{a.name}</span>
+              <span className="pa-detail">{a.type} Â· {a.priority} Â· {a.status}{a.requires_approval ? " Â· APPROVAL REQUIRED" : ""}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </Panel>
+  );
+}
+
+function Features({ features, count }: { features: PhishingAnalysis["features"]; count: number }) {
+  const [open, setOpen] = useState(false);
+  const known = new Set(FEATURE_GROUPS.flatMap((g) => g.keys));
+  const other = Object.keys(features).filter((k) => !known.has(k));
+  const groups = [
+    ...FEATURE_GROUPS.map((g) => ({ title: g.title, keys: g.keys.filter((k) => k in features) })),
+    { title: "OTHER MODEL FEATURES", keys: other },
+  ].filter((g) => g.keys.length > 0);
+  return (
+    <Panel title="">
+      <button className="pa-btn pa-mono" onClick={() => setOpen(!open)} aria-expanded={open} style={{ letterSpacing: ".14em", fontSize: 12 }}>
+        {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+        TECHNICAL FEATURE ANALYSIS â€” {count} FEATURES
+      </button>
+      {open && (
+        <div className="pa-feat-grid">
+          {groups.map((g) => (
+            <div className="pa-feat-g" key={g.title}>
+              <h4 className="pa-mono">{g.title}</h4>
+              {g.keys.map((k) => (
+                <div className="pa-feat pa-mono" key={k}><span>{k}</span><span>{fmtFeature(features[k])}</span></div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </Panel>
+  );
+}
+
+function Result({ d }: { d: PhishingAnalysis }) {
+  const { model, risk } = d;
+  const isPhishing = model.prediction === "phishing";
+  const verdict = isPhishing ? "PHISHING" : "LEGITIMATE";
+  const confidence = (isPhishing ? model.phishing_probability : 1 - model.phishing_probability) * 100;
+  const phishPct = model.phishing_probability * 100;
+  const rc = riskColor(risk.risk_level);
+  const vc = isPhishing ? RED : GREEN;
+  const hasRecs = d.response.recommendations.length > 0;
+  const summary = isPhishing
+    ? "Model flags this URL as phishing."
+    : risk.indicator_count > 0
+      ? "Legitimate model verdict with additional suspicious indicators."
+      : "Legitimate model verdict; no additional suspicious indicators. Not a guarantee of safety.";
+
+  return (
+    <>
+      <div className="pa-head">
+        <div className="pa-crumb pa-mono">CYBERGUARD / PHISHING ANALYSIS</div>
+        <div className="pa-url pa-mono">{d.url}</div>
+      </div>
+
+      <div className="pa-grid4">
+        <MetricCard value={risk.risk_level} label="RISK" color={rc} />
+        <MetricCard value={`${risk.risk_score} / 100`} label="RISK SCORE" color={rc} />
+        <MetricCard value={verdict} sub={pct(confidence)} label="MODEL VERDICT" color={vc} />
+        <MetricCard value={pct(phishPct)} label="PHISHING PROBABILITY" color={isPhishing ? RED : CYAN} />
+      </div>
+
+      <div className="pa-grid2">
+        <Panel title="DETECTION SUMMARY">
+          <dl className="pa-kv pa-mono">
+            <dt>Verdict</dt><dd>{verdict}</dd>
+            <dt>Confidence</dt><dd>{pct(confidence)}</dd>
+            <dt>Phishing Probability</dt><dd>{pct(phishPct)}</dd>
+            <dt>Suspicious Indicators</dt><dd>{risk.indicator_count}</dd>
+            <dt>Recommended</dt><dd>{hasRecs ? "REVIEW" : "NO ACTION"}</dd>
+          </dl>
+          <div className="pa-note">{summary}</div>
+          {risk.severity_description && <div className="pa-detail" style={{ marginTop: 6 }}>{risk.severity_description}</div>}
+        </Panel>
+        <ThreatIntel d={d} />
+      </div>
+
+      <Panel title="SUSPICIOUS INDICATORS" right={`${risk.indicators.length} DETECTED`}>
+        {risk.indicators.length === 0 && <div className="pa-detail">No suspicious indicators reported.</div>}
+        {risk.indicators.map((ind) => (
+          <div className="pa-ind" key={ind.name}>
+            <AlertTriangle size={16} color={ORANGE} />
+            <div className="pa-ind-main">
+              <div className="pa-ind-n">{ind.name}</div>
+              <div className="pa-ind-r">{ind.reason}</div>
+            </div>
+            <div className="pa-pts pa-mono">+{ind.points}</div>
+          </div>
+        ))}
+      </Panel>
+
+      <Response d={d} />
+      <Features features={d.features} count={model.feature_count} />
+    </>
+  );
+}
+
+export default function PhishingAnalysisView({ state }: { state: PhishingState }) {
+  if (state.status === "idle") return null;
+
+  if (state.status === "loading") {
+    return (
+      <div className="pa">
+        <Panel title="CYBERGUARD / PHISHING ANALYSIS">
+          <div className="pa-load pa-mono">
+            <div className="pa-load-t">ANALYZING URL...</div>
+            <div className="pa-url">{state.url}</div>
+            <div className="pa-load-s">MODEL 1</div>
+            <div className="pa-load-s">EXTRACTING FEATURES</div>
+            <div className="pa-load-s">CHECKING THREAT INTELLIGENCE</div>
+            <div className="pa-load-s">CALCULATING RISK</div>
+          </div>
+        </Panel>
+      </div>
+    );
+  }
+
+  if (state.status === "error") {
+    return (
+      <div className="pa">
+        <section className="pa-panel pa-err">
+          <div className="pa-err-t pa-mono">ANALYSIS FAILED{state.httpStatus ? ` Â· HTTP ${state.httpStatus}` : ""}</div>
+          <div className="pa-err-m">{state.message}</div>
+        </section>
+      </div>
+    );
+  }
+
+  return <div className="pa"><Result d={state.data} /></div>;
+}
+

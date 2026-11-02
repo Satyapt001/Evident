@@ -1,0 +1,141 @@
+import { useState } from 'react'
+import { AlertTriangle, CheckCircle2, Loader2, Mail, ShieldAlert } from 'lucide-react'
+import { analyzeEmail, type EmailAnalysisResult } from '@/api/emailAnalysis'
+import AdminActionCenter from '@/components/actions/AdminActionCenter'
+import './social-engineering.css'
+
+export default function SocialEngineeringAnalyzer() {
+  const [sender, setSender] = useState('security-notice@bank-verification.com')
+  const [subject, setSubject] = useState('URGENT: Unauthorized Transaction Detected on Your Account')
+  const [body, setBody] = useState(
+    'Dear Customer, We detected an unauthorized login attempt from an unrecognized device. Your account will be locked within 24 hours unless you verify your identity immediately: http://192.168.1.100:8080/bank-login. Please also check the attached invoice.exe for transaction details.'
+  )
+  const [result, setResult] = useState<EmailAnalysisResult | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  const scan = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      setResult(await analyzeEmail({ sender, subject, body }))
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Email analysis failed.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const riskClass = result?.risk_level?.toLowerCase() ?? ''
+  const percent = Math.min(100, Math.max(0, result?.risk_score ?? 0))
+
+  return (
+    <section className="social-engineering">
+      <div className="social-engineering__head">
+        <div>
+          <div className="social-engineering__title"><Mail size={19} /> Social Engineering &amp; Email Analyzer</div>
+          <p>Analyze email language, impersonation, credential lures and embedded URLs without changing the existing Model 1 URL detector.</p>
+        </div>
+        <span className="social-engineering__tag">MODEL 1 EXTENSION</span>
+      </div>
+
+      <div className="social-engineering__form">
+        <label>
+          <span>Sender Address <em>(Optional)</em></span>
+          <input value={sender} onChange={e => setSender(e.target.value)} placeholder="security@example.com" />
+        </label>
+
+        <label>
+          <span>Email Subject</span>
+          <input value={subject} onChange={e => setSubject(e.target.value)} placeholder="Suspicious email subject" />
+        </label>
+
+        <label>
+          <span>Email Body Content</span>
+          <textarea rows={7} value={body} onChange={e => setBody(e.target.value)} placeholder="Paste the suspicious email body here..." />
+        </label>
+
+        <button className="social-engineering__scan" onClick={() => void scan()} disabled={loading || (!subject.trim() && !body.trim())}>
+          {loading ? <><Loader2 size={16} className="spin" /> SCANNING EMAIL…</> : <><ShieldAlert size={16} /> SCAN EMAIL WITH AI</>}
+        </button>
+      </div>
+
+      {error && (
+        <div className="social-engineering__error">
+          <AlertTriangle size={16} />
+          <div><b>EMAIL ANALYSIS UNAVAILABLE</b><span>{error}</span></div>
+        </div>
+      )}
+
+      {result && (
+        <>
+          <div className={`social-engineering__result social-engineering__result--${riskClass}`}>
+            <div className="social-engineering__result-main">
+              <span className="social-engineering__eyebrow">FINAL EMAIL ASSESSMENT</span>
+              <h3>{result.verdict}</h3>
+              <p>{result.explanation}</p>
+            </div>
+            <div className="social-engineering__score">
+              <span>RISK SCORE</span>
+              <strong>{result.risk_score.toFixed(2)}</strong>
+              <small>/100 · {result.risk_level}</small>
+            </div>
+          </div>
+
+          <div className="social-engineering__metrics">
+            <div><span>SOCIAL ENGINEERING</span><b>{result.social_engineering_score.toFixed(0)}</b></div>
+            <div><span>CONFIDENCE</span><b>{(result.confidence * 100).toFixed(1)}%</b></div>
+            <div><span>EXTRACTED URLS</span><b>{result.entities.urls.length}</b></div>
+            <div><span>IP ADDRESSES</span><b>{result.entities.ip_addresses.length}</b></div>
+          </div>
+
+          <div className="social-engineering__grid">
+            <div className="social-engineering__panel">
+              <div className="social-engineering__panel-title">SOCIAL ENGINEERING INDICATORS <span>{result.indicators.length}</span></div>
+              {result.indicators.length === 0 ? (
+                <div className="social-engineering__empty"><CheckCircle2 size={15} /> No social-engineering indicators detected.</div>
+              ) : result.indicators.map((item, index) => (
+                <div className="social-engineering__indicator" key={`${item.category}-${index}`}>
+                  <div><b>{item.name}</b><strong>+{item.points.toFixed(0)}</strong></div>
+                  <p>{item.reason}</p>
+                  {item.evidence && <small>Evidence: {item.evidence}</small>}
+                </div>
+              ))}
+            </div>
+
+            <div className="social-engineering__panel">
+              <div className="social-engineering__panel-title">EXTRACTED &amp; MODEL 1 ANALYSIS <span>{result.url_results.length}</span></div>
+              {result.url_results.length === 0 ? (
+                <div className="social-engineering__empty">No URLs found in this email.</div>
+              ) : result.url_results.map((item, index) => (
+                <div className="social-engineering__url" key={`${item.url}-${index}`}>
+                  <code>{item.url}</code>
+                  <div className="social-engineering__url-meta">
+                    <span>{item.prediction}</span>
+                    <span>{item.risk_score.toFixed(2)} / 100</span>
+                    <span>{item.risk_level}</span>
+                    <span>TI MATCH: {item.threat_intelligence_matches}</span>
+                  </div>
+                  <small>Phishing probability: {(item.phishing_probability * 100).toFixed(2)}%</small>
+                  {item.error && <small className="social-engineering__muted">{item.error}</small>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="social-engineering__panel">
+            <div className="social-engineering__panel-title">RECOMMENDED RESPONSE <span>{result.recommendations.length}</span></div>
+            {result.recommendations.map((item, index) => (
+              <div className="social-engineering__recommendation" key={`${item.priority}-${index}`}>
+                <strong>{item.priority}</strong>
+                <div><b>{item.action}</b><span>{item.reason}</span></div>
+              </div>
+            ))}
+          </div>
+
+          <AdminActionCenter requestId={result.request_id} />
+        </>
+      )}
+    </section>
+  )
+}

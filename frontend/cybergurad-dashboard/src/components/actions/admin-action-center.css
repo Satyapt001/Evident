@@ -1,0 +1,22 @@
+.admin-action-center{display:flex;flex-direction:column;gap:12px;margin:14px 0 18px;padding:14px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);min-width:0;color:var(--text)}
+.admin-action-center__head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.admin-action-center__eyebrow{display:block;font:10px var(--font-mono);letter-spacing:.13em;color:var(--cyan);margin-bottom:5px}
+.admin-action-center__head h3{font:700 16px var(--font-mono);margin:0 0 5px;color:var(--text)}
+.admin-action-center__head p{font-size:11px;line-height:1.55;color:var(--text-dim);max-width:780px}
+.action-refresh{display:grid;place-items:center;flex:none;width:34px;height:34px;background:var(--panel-2);border:1px solid var(--border-strong);color:var(--text-dim);border-radius:var(--radius)}
+.action-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:stretch}
+.action-card{display:flex;flex-direction:column;align-items:stretch;gap:9px;min-width:0;padding:13px;border:1px solid var(--border-strong);background:var(--panel-2);border-radius:var(--radius)}
+.action-card--danger{border-top:2px solid var(--red)}.action-card--warning{border-top:2px solid var(--orange)}
+.action-card__top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.action-card__category,.action-card__priority{font:9px var(--font-mono);letter-spacing:.08em;color:var(--text-faint)}
+.action-card__priority{padding:3px 6px;border:1px solid var(--border-strong);color:var(--text-dim)}
+.action-card__priority--high,.action-card__priority--critical{color:var(--red);border-color:color-mix(in srgb,var(--red) 55%,var(--border))}.action-card__priority--medium{color:var(--orange);border-color:color-mix(in srgb,var(--orange) 50%,var(--border))}.action-card__priority--low{color:var(--green)}
+.action-card__title{display:flex;align-items:center;gap:7px;font-size:12px;line-height:1.4}.action-card__title svg{flex:none;color:var(--cyan)}.action-card--danger .action-card__title svg{color:var(--red)}
+.action-card p{font-size:11px;line-height:1.55;color:var(--text);margin:0}.action-card small{font-size:10px;line-height:1.5;color:var(--text-dim);margin-top:auto}
+.action-execute{display:flex;justify-content:center;align-items:center;gap:7px;min-height:34px;padding:8px 10px;margin-top:3px;border:1px solid var(--cyan);border-radius:var(--radius);background:var(--cyan-dim);color:var(--cyan);font:700 10px var(--font-mono);letter-spacing:.04em}
+.action-execute:hover:not(:disabled){filter:brightness(1.15);border-color:var(--cyan)}.action-execute:disabled{opacity:.45;cursor:not-allowed}
+.action-message{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border:1px solid var(--border-strong);font-size:11px;line-height:1.5}.action-message--error{color:var(--red);border-color:color-mix(in srgb,var(--red) 40%,var(--border));background:color-mix(in srgb,var(--red) 7%,transparent)}.action-message--success{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,var(--border));background:color-mix(in srgb,var(--green) 7%,transparent)}
+.action-history{border:1px solid var(--border);background:var(--bg)}.action-history__head{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);font:10px var(--font-mono);letter-spacing:.08em;color:var(--text-faint)}
+.action-history__row{display:grid;grid-template-columns:100px minmax(0,1fr) 110px 100px;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--border);font-size:10px}.action-history__row:last-child{border-bottom:0}.action-history__row b{overflow-wrap:anywhere}.action-history__row>span:not(.action-history__status){color:var(--text-dim)}
+.action-history__status{font:9px var(--font-mono);color:var(--orange)}.action-history__status--executed,.action-history__status--success{color:var(--green)}.action-history__status--failed,.action-history__status--error{color:var(--red)}
+@media(max-width:760px){.action-grid{grid-template-columns:1fr}.action-history__row{grid-template-columns:1fr 1fr;gap:5px}.admin-action-center__head{align-items:flex-start}}
